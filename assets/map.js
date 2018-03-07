@@ -43,7 +43,7 @@ Game.Map.prototype.getWidth = function() {
 Game.Map.prototype.getHeight = function() {
     return this._height;
 };
-Game.Map.prototype.setScheduler = function(map, time) {
+Game.Map.prototype.addAction = function(map, time) {
         sch = map._scheduler;
         sch.setDuration(time);  
         sch.next();       

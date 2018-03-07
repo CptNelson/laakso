@@ -261,7 +261,7 @@ Game.Screen.playScreen = {
         } 
     },
     wait: function(){
-            Game.Map.prototype.setScheduler(this._player.getMap(), 2);
+            Game.Map.prototype.addAction(this._player.getMap(), 2);
     },
     move: function(dX, dY, dZ) {
         var newX = this._player.getX() + dX;
