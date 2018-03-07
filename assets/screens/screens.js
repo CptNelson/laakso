@@ -147,6 +147,7 @@ Game.Screen.playScreen = {
         }
     },
     handleInput: function(inputType, inputData) {
+        
         // If the game is over, enter will bring the user to the losing screen.
         if (this._gameEnded) {
             if (inputType === 'keydown' && inputData.keyCode === ROT.VK_RETURN) {
@@ -178,7 +179,8 @@ Game.Screen.playScreen = {
                 this.move(-1, -1, 0);
             } else if (inputData.keyCode === 105) {
                 this.move(1, -1, 0);
-    
+            } else if (inputData.keyCode === ROT.VK_1) {
+                this.wait();
             } else if (inputData.keyCode === ROT.VK_I) {
                 // Show the inventory screen
                 scr = Game.Screen.inventoryScreen
@@ -257,6 +259,9 @@ Game.Screen.playScreen = {
             // Unlock the engine
             this._player.getMap().getEngine().unlock();
         } 
+    },
+    wait: function(){
+            Game.Map.prototype.setScheduler(this._player.getMap());
     },
     move: function(dX, dY, dZ) {
         var newX = this._player.getX() + dX;

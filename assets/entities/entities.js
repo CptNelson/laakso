@@ -26,7 +26,7 @@ Game.EntityRepository.define('villager', {
     foreground: 'white',
     maxHp: 10,
     attackValue: 4,
-    speed: 1000,
+    //speed: 1000,
     mixins: [Game.EntityMixins.Tasks,
              Game.EntityMixins.Attacker, Game.EntityMixins.Destructible,
              Game.EntityMixins.CorpseDropper,

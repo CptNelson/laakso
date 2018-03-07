@@ -104,7 +104,7 @@ Game.Entity.prototype.tryMove = function(x, y, z, map) {
     } else if (tile.isWalkable()) {        
         // Update the entity's position
         this.setPosition(x, y, z);
-        Game.Map.prototype.setScheduler(map, this, false, 1);
+       // Game.Map.prototype.setScheduler(map, this, false, 1);
         // Notify the entity that there are items at this position
         var items = this.getMap().getItemsAt(x, y, z);
         if (items) {
