@@ -37,5 +37,6 @@ Game.Map.Village = function (tiles, player) {
     this.addEntityAtRandomPosition(player, 0);
     var entity = Game.EntityRepository.createRandom();
     this.addEntityAtRandomPosition(entity, 0);
+    
 };
 Game.Map.Village.extend(Game.Map);

@@ -9,10 +9,12 @@ Game.Map = function(tiles) {
     this.setupFov();
     // Create a table which will hold the entities
     this._entities = {};
+    this._entityArray = [];
     // Create a table which will hold the items
     this._items = {};
     // Create the engine and scheduler
-    this._scheduler = new ROT.Scheduler.Speed();
+    this._scheduler = new ROT.Scheduler.Action();
+   // this._scheduler.next(); 
     this._engine = new ROT.Engine(this._scheduler);
     // Setup the explored array
     this._explored = new Array(this._depth);
@@ -41,6 +43,19 @@ Game.Map.prototype.getWidth = function() {
 Game.Map.prototype.getHeight = function() {
     return this._height;
 };
+Game.Map.prototype.setScheduler = function(map, entity, repeat, time) {
+        sch = map._scheduler;
+        sch.add(entity, false, time)
+        sch.next();
+        sch.setDuration(1); 
+     
+        console.log(sch.getTime())
+        Game.refresh();
+        
+};
+
+
+
 
 // Gets the tile for a given coordinate set
 Game.Map.prototype.getTile = function(x, y, z) {
@@ -146,23 +161,24 @@ Game.Map.prototype.getRandomFloorPosition = function(z) {
     return {x: x, y: y, z: z};
 };
 
-Game.Map.prototype.addEntityAtRandomPosition = function(entity, z) {
+Game.Map.prototype.addEntityAtRandomPosition = function(entity, z, repeat, time) {
     var position = this.getRandomFloorPosition(z);
     entity.setX(position.x);
     entity.setY(position.y);
     entity.setZ(position.z);
-    this.addEntity(entity);
+    this.addEntity(entity, repeat, time);
 };
 
-Game.Map.prototype.addEntity = function(entity) {
+Game.Map.prototype.addEntity = function(entity, repeat, time) {
     // Update the entity's map
     entity.setMap(this);
     // Update the map with the entity's position
     this.updateEntityPosition(entity);
     // Check if this entity is an actor, and if so add
     // them to the scheduler
-    if (entity.hasMixin('Actor')) {
-       this._scheduler.add(entity, true);
+
+    if (entity.hasMixin('Actor')) {    
+       this._scheduler.add(entity, true, 1);
     } 
     // If the entity is the player, set the player.
     if (entity.hasMixin(Game.EntityMixins.PlayerActor)) {

@@ -5,7 +5,7 @@ Game.Entity = function(properties) {
     // Instantiate any properties from the passed object
     this._x = properties['x'] || 0;
     this._y = properties['y'] || 0;
-    this._z = properties['z'] || 0;
+    this._z = properties['z'] || 0;    
     this._map = null;
     this._alive = true;
     // Acting speed
@@ -62,7 +62,8 @@ Game.Entity.prototype.tryMove = function(x, y, z, map) {
     var map = this.getMap();
     // Must use starting z
     var tile = map.getTile(x, y, this.getZ());
-    var target = map.getEntityAt(x, y, this.getZ());    
+    var target = map.getEntityAt(x, y, this.getZ());  
+      
     
     // If our z level changed, check if we are on stair
     if (z < this.getZ()) {
@@ -103,6 +104,7 @@ Game.Entity.prototype.tryMove = function(x, y, z, map) {
     } else if (tile.isWalkable()) {        
         // Update the entity's position
         this.setPosition(x, y, z);
+        Game.Map.prototype.setScheduler(map, this, false, 1);
         // Notify the entity that there are items at this position
         var items = this.getMap().getItemsAt(x, y, z);
         if (items) {
@@ -112,6 +114,8 @@ Game.Entity.prototype.tryMove = function(x, y, z, map) {
                 Game.sendMessage(this, "There are several objects here.");
             }
         }
+        
+       
         return true;
     // Check if the tile is diggable
     } else if (tile.isDiggable()) {

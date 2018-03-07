@@ -2,14 +2,14 @@ Game.Map.Cave = function(tiles, player) {
     // Call the Map constructor
     Game.Map.call(this, tiles);
     // Add the player
-    this.addEntityAtRandomPosition(player, 0);
+    this.addEntityAtRandomPosition(player, 0, true, 0);
     // Add random entities and items to each floor.
     for (var z = 0; z < this._depth; z++) {
         // 15 entities per floor
         for (var i = 0; i < 15; i++) {
             var entity = Game.EntityRepository.createRandom();
             // Add a random entity
-            this.addEntityAtRandomPosition(entity, z);
+            this.addEntityAtRandomPosition(entity, z, true, 0);
             // Level up the entity based on the floor
             if (entity.hasMixin('ExperienceGainer')) {
                 for (var level = 0; level < z; level++) {

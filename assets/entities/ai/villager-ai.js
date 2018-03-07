@@ -1,0 +1,3 @@
+Game.EntityMixins.VillagerAI = {
+    
+}

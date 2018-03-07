@@ -9,7 +9,6 @@ var Game =  {
             height: this._screenHeight + 6, forceSquareRatio:true});
         // Create a helper function for binding to an event
         // and making it send it to the screen
-        console.log(this._display.forceSquareRatio)
         var game = this; // So that we don't lose this
         var bindEventToScreen = function(event) {
             window.addEventListener(event, function(e) {
