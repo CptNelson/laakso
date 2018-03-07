@@ -179,7 +179,7 @@ Game.Screen.playScreen = {
                 this.move(-1, -1, 0);
             } else if (inputData.keyCode === 105) {
                 this.move(1, -1, 0);
-            } else if (inputData.keyCode === ROT.VK_1) {
+            } else if (inputData.keyCode === 101) {
                 this.wait();
             } else if (inputData.keyCode === ROT.VK_I) {
                 // Show the inventory screen
@@ -261,7 +261,7 @@ Game.Screen.playScreen = {
         } 
     },
     wait: function(){
-            Game.Map.prototype.setScheduler(this._player.getMap());
+            Game.Map.prototype.setScheduler(this._player.getMap(), 2);
     },
     move: function(dX, dY, dZ) {
         var newX = this._player.getX() + dX;
