@@ -4,17 +4,19 @@ Game.EntityMixins.VillagerAI = {
     init: function (template) {
 
         // Load tasks
-        this._tasks = template['tasks'] || ['wander', 'build']; 
+        this._tasks = template['tasks'] || ['build', 'wander'];
     },
     act: function () {
-                 // Iterate through all our tasks
-                for (var i = 0; i < this._tasks.length; i++) {
-                    if (this.canDoTask(this._tasks[i])) {
-                        // If we can perform the task, execute the function for it.
-                        this[this._tasks[i]]();
-                        return;
-                    }
-                }               
+        // Iterate through all our tasks
+        for (var i = 0; i < this._tasks.length; i++) {
+            console.log(this._tasks[i]);
+            if (this.canDoTask(this._tasks[i])) {
+
+                // If we can perform the task, execute the function for it.
+                this[this._tasks[i]]();
+                return;
+            }
+        }
     },
     canDoTask: function (task) {
         if (task === 'build') {
@@ -25,4 +27,75 @@ Game.EntityMixins.VillagerAI = {
             throw new Error('Tried to perform undefined task ' + task);
         }
     },
+    wander: function () {
+
+        // Flip coin to determine if moving by 1 in the positive or negative direction
+        var moveOffset = (Math.round(Math.random()) === 1) ? 1 : -1;
+
+        // Flip coin to determine if moving in x direction or y direction
+        if (Math.round(Math.random()) === 1) {
+            this.tryMove(this.getX() + moveOffset, this.getY(), this.getZ());
+        } else {
+            this.tryMove(this.getX(), this.getY() + moveOffset, this.getZ());
+
+        }
+    },
+    build: function () {
+        map = this.getMap()
+        targetX = null;
+        targetY = null;
+        target = null;
+
+        /* 
+            check if there's construction tiles in the map
+            find path to nearest one
+            go to it and start building
+        */
+
+        // console.log(map.getHeight());
+        for (x = 0; x < map.getHeight(); x++) {
+            for (y = 0; y < map.getWidth(); y++) {
+                if (map.getTile(y, x, 0) == Game.Tile.construction) {
+                    targetX = y;
+                    targetY = x;
+                    target = map.getTile(y, x, 0)
+
+                }
+            }
+        }
+
+        console.log(target);
+
+
+
+        // If we are adjacent to the target, then attack instead of hunting.
+        var offsets = Math.abs(targetX - this.getX()) +
+            Math.abs(targetY - this.getY());
+        if (offsets === 1) {
+            console.log("here");        
+            return;
+        }
+
+        // Generate the path and move to the first tile.
+        var source = this;
+        var z = source.getZ();
+        var path = new ROT.Path.AStar(targetX, targetY, function (x, y) {
+            // If an entity is present at the tile, can't move there.
+            var entity = source.getMap().getEntityAt(x, y, z);
+            if (entity && entity !== target && entity !== source) {
+                return false;
+            }
+            return source.getMap().getTile(x, y, z).isWalkable();
+        }, { topology: 8 });
+        // Once we've gotten the path, we want to move to the second cell that is
+        // passed in the callback (the first is the entity's strting point)
+        var count = 0;
+        path.compute(source.getX(), source.getY(), function (x, y) {
+            if (count == 1) {
+                source.tryMove(x, y, z);
+            }
+            count++;
+        });
+    },
+
 }

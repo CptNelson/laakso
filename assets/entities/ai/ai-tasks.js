@@ -15,7 +15,7 @@ Game.EntityMixins.Tasks = {
                         return;
                     }
                 } */       
-        this.wander();
+       // this.wander();
         
     },
     canDoTask: function (task) {

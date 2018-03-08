@@ -3,7 +3,6 @@
 Game.Map.Village = function (tiles, player) {
     // Call the Map constructor
     Game.Map.call(this, tiles);
-    // Add the player
 
 
     var villageMap = [['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
