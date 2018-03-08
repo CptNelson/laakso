@@ -3,7 +3,7 @@ Game.Screen = {}
 Game.Screen.startScreen = {
     enter: function() {    console.log("Entered start screen."); },
     exit: function() { console.log("Exited start screen."); },
-    render: function(display) {
+    render: function(display) {     
         // Render our prompt to the screen
         display.drawText(1,1, "%c{yellowgreen}Welcome to Laakso.");
         display.drawText(1,2, "Press [Enter] to start!");
@@ -181,6 +181,8 @@ Game.Screen.playScreen = {
                 this.move(1, -1, 0);
             } else if (inputData.keyCode === 101) {
                 this.wait();
+            } else if (inputData.keyCode === ROT.VK_M) {
+                this.markForBuilding();
             } else if (inputData.keyCode === ROT.VK_I) {
                 // Show the inventory screen
                 scr = Game.Screen.inventoryScreen
@@ -262,6 +264,18 @@ Game.Screen.playScreen = {
     },
     wait: function(){
             Game.Map.prototype.addAction(this._player.getMap(), 2);
+    },
+    markForBuilding: function() {
+        thisTiles = this._player.getMap()._tiles;
+        if (thisTiles[this._player.getZ()][this._player.getX()]
+                            [this._player.getY()] == Game.Tile.construction) {
+            thisTiles[this._player.getZ()][this._player.getX()][this._player.getY()] =
+                                    Game.Tile.floorTile;
+        }else {
+            thisTiles[this._player.getZ()][this._player.getX()]
+            [this._player.getY()] = Game.Tile.construction;
+        }
+        
     },
     move: function(dX, dY, dZ) {
         var newX = this._player.getX() + dX;

@@ -52,12 +52,12 @@ Game.Tile.stairsDownTile = new Game.Tile({
     blocksLight: false,
     description: 'A rock staircase leading downwards'
 });
-Game.Tile.holeToCavernTile = new Game.Tile({
-    character: 'O',
-    foreground: 'white',
+Game.Tile.construction = new Game.Tile({
+    character: '¤',
+    foreground: 'goldenrod',
     walkable: true,
     blocksLight: false,
-    description: 'A great dark hole in the ground'
+    description: 'A piece of wall is being build here'
 });
 Game.Tile.waterTile = new Game.Tile({
     character: '~',

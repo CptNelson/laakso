@@ -50,11 +50,8 @@ Game.Builder.prototype._generateArena = function() {
 
     // Smoothen it one last time and then update our map
     generator.create(function(x,y,v) {
-        if (v === 0) {
             map[x][y] = Game.Tile.floorTile;
-        } else {
-            map[x][y] = Game.Tile.wallTile;
-        }
+
     });
     return map;
 };
