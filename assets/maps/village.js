@@ -1,3 +1,5 @@
+// Constructor for ruined village
+
 Game.Map.Village = function (tiles, player) {
     // Call the Map constructor
     Game.Map.call(this, tiles);
@@ -34,8 +36,19 @@ Game.Map.Village = function (tiles, player) {
         }
     }
 
+    for (x = 0; x < villageMap.length; x++) {
+        for (y = 0; y < villageMap[0].length; y++) {
+            if (villageMap[x][y] == '#') {
+                i = Math.floor(Math.random() * (11))
+                if (i > 2) {
+                    this._tiles[0][y][x] = Game.Tile.floorTile;
+                }
+            }
+        }
+    }
+
     this.addEntityAtRandomPosition(player, 0);
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < 4; i++) {
         var entity = Game.EntityRepository.createRandom();
         entity._name = Game.NameGenerator();       
         this.addEntityAtRandomPosition(entity, 0);
