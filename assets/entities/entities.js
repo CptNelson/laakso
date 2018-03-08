@@ -21,7 +21,7 @@ Game.EntityRepository = new Game.Repository('entities', Game.Entity);
 
 
 Game.EntityRepository.define('villager', {
-    name: Game.NameGenerator(),
+    name: 'villager',
     character: 'H',
     foreground: 'white',
     maxHp: 10,
