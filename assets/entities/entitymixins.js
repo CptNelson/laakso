@@ -38,9 +38,9 @@ Game.EntityMixins.Attacker = {
             var max = Math.max(0, attack - defense);
             var damage = 1 + Math.floor(Math.random() * max);
 
-            Game.sendMessage(this, 'You strike the %s for %d damage!', 
+            Game.sendMessage(this, 'You strike %s for %d damage!', 
                 [target.getName(), damage]);
-            Game.sendMessage(target, 'The %s strikes you for %d damage!', 
+            Game.sendMessage(target, '%s strikes you for %d damage!', 
                 [this.getName(), damage]);
 
             target.takeDamage(this, damage);
@@ -106,7 +106,7 @@ Game.EntityMixins.Destructible = {
         this._hp -= damage;
         // If have 0 or less HP, then remove ourseles from the map
         if (this._hp <= 0) {
-            Game.sendMessage(attacker, 'You kill the %s!', [this.getName()]);
+            Game.sendMessage(attacker, 'You kill %s!', [this.getName()]);
             // Raise events
             this.raiseEvent('onDeath', attacker);
             attacker.raiseEvent('onKill', this);

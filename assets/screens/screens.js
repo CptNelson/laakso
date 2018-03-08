@@ -5,7 +5,7 @@ Game.Screen.startScreen = {
     exit: function() { console.log("Exited start screen."); },
     render: function(display) {
         // Render our prompt to the screen
-        display.drawText(1,1, "%c{green}Laakso");
+        display.drawText(1,1, "%c{yellowgreen}Welcome to Laakso.");
         display.drawText(1,2, "Press [Enter] to start!");
     },
     handleInput: function(inputType, inputData) {
@@ -659,9 +659,19 @@ Game.Screen.TargetBasedScreen.prototype.render = function(display) {
     for (var i = 0, l = points.length; i < l; i++) {
         display.drawText(points[i].x, points[i].y, '%c{magenta}*');
     }
+    
+    var stats = '%c{greenyellow}%b{black}';
+    stats += vsprintf('HP: %d/%d L: %d XP: %d', 
+        [this._player.getHp(), this._player.getMaxHp(),
+         this._player.getLevel(), this._player.getExperience()]);
+    display.drawText(0, Game.getScreenHeight()+1, stats);
+    // Render hunger state
+    var hungerState = '%c{greenyellow}%b{black}';
+    hungerState += vsprintf('%s',[this._player.getHungerState()]);
+    display.drawText(Game.getScreenWidth() - hungerState.length/2, Game.getScreenHeight()+1, hungerState);
 
     // Render the caption at the bottom.
-    display.drawText(0, Game.getScreenHeight() - 1, 
+    display.drawText(0, Game.getScreenHeight() + 3, 
         this._captionFunction(this._cursorX + this._offsetX, this._cursorY + this._offsetY));
 };
 
@@ -722,7 +732,7 @@ Game.Screen.lookScreen = new Game.Screen.TargetBasedScreen({
                 // Else check if there's an entity
                 } else if (map.getEntityAt(x, y, z)) {
                     var entity = map.getEntityAt(x, y, z);
-                    return String.format('%s - %s (%s)',
+                    return String.format('%s ',
                 
                         entity.describeA(true),
                        //    entity.details()
@@ -747,21 +757,20 @@ Game.Screen.lookScreen = new Game.Screen.TargetBasedScreen({
 // Define our help screen
 Game.Screen.helpScreen = {
     render: function(display) {
-        var text = 'jsrogue help';
-        var border = '-------------';
+        var text = '%c{greenyellow}laakso help';
+        var border = '-----------';
         var y = 0;
         display.drawText(Game.getScreenWidth() / 2 - text.length / 2, y++, text);
         display.drawText(Game.getScreenWidth() / 2 - text.length / 2, y++, border);
-        display.drawText(0, y++, 'The villagers have been complaining of a terrible stench coming from the cave.');
-        display.drawText(0, y++, 'Find the source of this smell and get rid of it!');
+
         y += 3;
         display.drawText(0, y++, '[,] to pick up items');
         display.drawText(0, y++, '[d] to drop items');
         display.drawText(0, y++, '[e] to eat items');
         display.drawText(0, y++, '[w] to wield items');
-        display.drawText(0, y++, '[W] to wield items');
-        display.drawText(0, y++, '[x] to examine items');
-        display.drawText(0, y++, '[;] to look around you');
+        display.drawText(0, y++, '[W] to wear items');
+        display.drawText(0, y++, '[x] to examine it ems');
+        display.drawText(0, y++, '[l] to look around you');
         display.drawText(0, y++, '[?] to show this help screen');
         y += 3;
         text = '--- press any key to continue ---';
