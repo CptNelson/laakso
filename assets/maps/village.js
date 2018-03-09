@@ -30,8 +30,20 @@ Game.Map.Village = function (tiles, player) {
     for (x = 0; x < villageMap.length; x++) {
         for (y = 0; y < villageMap[0].length; y++) {
             if (villageMap[x][y] == '#') {
-                this._tiles[0][y][x] = Game.Tile.wallTile;
+                this._tiles[0][y + 10][x + 10] = Game.Tile.wallTile;
             } else this._tiles[0][y][x] = Game.Tile.floorTile;
+        }
+    }
+
+    for (x = 0; x < this._tiles[0].length; x++) {
+        for (y = 0; y < this._tiles[0][0].length; y++) {
+            i = Math.floor(Math.random() * (20))
+            if (i == 8) {
+                this._tiles[0][y][x] = Game.Tile.yellowTreeTile;
+            }
+            if (i == 9) {
+                this._tiles[0][y][x] = Game.Tile.treeTile;
+            }
         }
     }
 
@@ -39,8 +51,11 @@ Game.Map.Village = function (tiles, player) {
         for (y = 0; y < villageMap[0].length; y++) {
             if (villageMap[x][y] == '#') {
                 i = Math.floor(Math.random() * (11))
-                if (i > 2) {
-                    this._tiles[0][y][x] = Game.Tile.floorTile;
+                if (i > 3) {
+                    this._tiles[0][y + 10][x + 10] = Game.Tile.floorTile;
+                }
+                if (i > 5) {
+                    this._tiles[0][y + 10][x + 10] = Game.Tile.treeTile;
                 }
             }
         }
@@ -49,7 +64,7 @@ Game.Map.Village = function (tiles, player) {
     this.addEntityAtRandomPosition(player, 0);
     for (i = 0; i < 4; i++) {
         var entity = Game.EntityRepository.createRandom();
-        entity._name = Game.NameGenerator();       
+        entity._name = Game.NameGenerator();
         this.addEntityAtRandomPosition(entity, 0);
     }
 

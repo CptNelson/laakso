@@ -72,7 +72,7 @@ Game.EntityMixins.VillagerAI = {
         var offsets = Math.abs(target.getX() - this.getX()) +
             Math.abs(target.getY() - this.getY());
         if (offsets === 1) {
-            target.setProgress(null, 1);
+            target.setProgress(null, 10);
             //console.log(target.getProgress());       
             return;
         }

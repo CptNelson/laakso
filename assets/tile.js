@@ -59,12 +59,19 @@ Game.Tile.construction = new Game.Tile({
     blocksLight: false,
     description: 'A piece of wall is being build here'
 });
-Game.Tile.waterTile = new Game.Tile({
-    character: '~',
-    foreground: 'blue',
-    walkable: false,
-    blocksLight: false,
-    description: 'Murky blue water'
+Game.Tile.treeTile = new Game.Tile({
+    character: '▲',
+    foreground: 'green',
+    walkable: true,
+    blocksLight: true,
+    description: 'A pine tree'
+});
+Game.Tile.yellowTreeTile = new Game.Tile({
+    character: '▲',
+    foreground: 'yellowgreen',
+    walkable: true,
+    blocksLight: true,
+    description: 'A pine tree'
 });
 
 // Helper function

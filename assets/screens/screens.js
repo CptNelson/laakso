@@ -25,8 +25,8 @@ Game.Screen.playScreen = {
     _subScreen: null,
     enter: function() {
         // Create a map based on our size parameters
-        var width = 40;
-        var height = 20;
+        var width = 60;
+        var height = 40;
         var depth = 1;
         // Create our map from the tiles and player
         this._player = new Game.Entity(Game.PlayerTemplate);
