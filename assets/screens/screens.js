@@ -266,15 +266,15 @@ Game.Screen.playScreen = {
             Game.Map.prototype.addAction(this._player.getMap(), 2);
     },
     markForBuilding: function() {
-        thisTiles = this._player.getMap()._tiles;
-        if (thisTiles[this._player.getZ()][this._player.getX()]
-                            [this._player.getY()] == Game.Tile.construction) {
-            thisTiles[this._player.getZ()][this._player.getX()][this._player.getY()] =
-                                    Game.Tile.floorTile;
-        }else {
-            thisTiles[this._player.getZ()][this._player.getX()]
-            [this._player.getY()] = Game.Tile.construction;
-        }
+        var entity = Game.EntityRepository.create('construct');
+        entity.setZ(this._player.getZ())
+        entity.setX(this._player.getX())
+        entity.setY(this._player.getY())
+        console.log(entity.getX(), " ", entity.getY());
+        
+        map = this._player.getMap()
+        Game.Map.prototype.addEntityHere(entity, map)
+        
         
     },
     move: function(dX, dY, dZ) {

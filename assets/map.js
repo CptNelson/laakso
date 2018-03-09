@@ -162,12 +162,23 @@ Game.Map.prototype.addEntityAtRandomPosition = function(entity, z, repeat, time)
     entity.setX(position.x);
     entity.setY(position.y);
     entity.setZ(position.z);
+    
     this.addEntity(entity, repeat, time);
 };
 
+Game.Map.prototype.addEntityHere = function(entity, map) {
+    console.log();
+    
+    map.addEntity(entity, false, 1)
+    
+}
+
 Game.Map.prototype.addEntity = function(entity, repeat, time) {
     // Update the entity's map
+    
+    
     entity.setMap(this);
+    
     // Update the map with the entity's position
     this.updateEntityPosition(entity);
     // Check if this entity is an actor, and if so add
@@ -201,11 +212,15 @@ Game.Map.prototype.removeEntity = function(entity) {
 
 Game.Map.prototype.updateEntityPosition = function(
     entity, oldX, oldY, oldZ) {
+      //  console.log("3");
     // Delete the old key if it is the same entity
     // and we have old positions.
     if (typeof oldX === 'number') {
+        console.log("1");
+        
         var oldKey = oldX + ',' + oldY + ',' + oldZ;
         if (this._entities[oldKey] == entity) {
+           // console.log("2");
             delete this._entities[oldKey];
         }
     }
@@ -217,8 +232,10 @@ Game.Map.prototype.updateEntityPosition = function(
     }
     // Sanity check to make sure there is no entity at the new position.
     var key = entity.getX() + ',' + entity.getY() + ',' + entity.getZ();
-    if (this._entities[key]) {
-        throw new Error('Tried to add an entity at an occupied position.');
+    if (!entity.hasMixin('Prop')) {
+        if (this._entities[key]) {
+            throw new Error('Tried to add an entity at an occupied position.');
+        }
     }
     // Add the entity to the table of entities
     this._entities[key] = entity;

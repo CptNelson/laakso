@@ -55,7 +55,7 @@ Game.Tile.stairsDownTile = new Game.Tile({
 Game.Tile.construction = new Game.Tile({
     character: '¤',
     foreground: 'goldenrod',
-    walkable: true,
+    walkable: false,
     blocksLight: false,
     description: 'A piece of wall is being build here'
 });

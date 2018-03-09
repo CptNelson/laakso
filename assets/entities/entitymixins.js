@@ -510,3 +510,8 @@ Game.EntityMixins.PlayerStatGainer = {
         }
     }
 };
+Game.EntityMixins.Prop = {
+    name: 'Prop',
+    groupName: 'Props',
+    
+}

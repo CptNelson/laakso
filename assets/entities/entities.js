@@ -32,3 +32,12 @@ Game.EntityRepository.define('villager', {
              Game.EntityMixins.CorpseDropper,
              Game.EntityMixins.ExperienceGainer, Game.EntityMixins.RandomStatGainer]
 });
+
+Game.EntityRepository.define('construct', {
+    name: 'construct',
+    character: '¤',
+    foreground: 'goldenrod',
+    mixins: [Game.EntityMixins.Prop]
+},{
+    disableRandomCreation: true
+});

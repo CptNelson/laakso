@@ -53,18 +53,22 @@ Game.EntityMixins.VillagerAI = {
         */
 
         // console.log(map.getHeight());
-        for (x = 0; x < map.getHeight(); x++) {
-            for (y = 0; y < map.getWidth(); y++) {
-                if (map.getTile(y, x, 0) == Game.Tile.construction) {
-                    targetX = y;
-                    targetY = x;
-                    target = map.getTile(y, x, 0)
-
-                }
-            }
+        tempEntities = map.getEntitiesWithinRadius(this.getX(), this.getY(), this.getZ(), 40)
+            for (i = 0; i < tempEntities.length; i++) {
+                    if (tempEntities[i].hasMixin('Prop')) {
+                        targetX = y;
+                        targetY = x;
+                        target = tempEntities[i]           
+                    } 
+                }               
+        //console.log(target);
+        
+        if (target == null){
+           // console.log("23");          
+            this.wander()
+            return
         }
-
-        console.log(target);
+      //  console.log(target);
 
 
 
@@ -79,7 +83,9 @@ Game.EntityMixins.VillagerAI = {
         // Generate the path and move to the first tile.
         var source = this;
         var z = source.getZ();
-        var path = new ROT.Path.AStar(targetX, targetY, function (x, y) {
+        var path = new ROT.Path.AStar(target.getX(), target.getY(), function (x, y) {
+   
+            
             // If an entity is present at the tile, can't move there.
             var entity = source.getMap().getEntityAt(x, y, z);
             if (entity && entity !== target && entity !== source) {
@@ -92,6 +98,7 @@ Game.EntityMixins.VillagerAI = {
         var count = 0;
         path.compute(source.getX(), source.getY(), function (x, y) {
             if (count == 1) {
+              
                 source.tryMove(x, y, z);
             }
             count++;
