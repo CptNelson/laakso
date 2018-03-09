@@ -515,3 +515,23 @@ Game.EntityMixins.Prop = {
     groupName: 'Props',
     
 }
+Game.EntityMixins.Buildable = {
+    name: 'Buildable',
+    groupName: 'Construction',
+    init: function(template) {
+        this._maxProgress = template['maxProgress'] || 100;
+        this._progress = template['progress'] || 1;
+    },
+    getProgress: function() {
+        return this._progress;        
+    },
+    // setProgress(null, 10) to add 10
+    setProgress: function(val, plus) {
+        this._progress = (val || this._progress) + (plus || 0) 
+        if (this._progress >= this._maxProgress) {
+            this.getMap()._tiles[this.getZ()][this.getX()][this.getY()] = Game.Tile.wallTile;
+            this.kill();
+        }        
+    }
+    
+};

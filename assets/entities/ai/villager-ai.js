@@ -42,8 +42,6 @@ Game.EntityMixins.VillagerAI = {
     },
     build: function () {
         map = this.getMap()
-        targetX = null;
-        targetY = null;
         target = null;
 
         /* 
@@ -56,8 +54,6 @@ Game.EntityMixins.VillagerAI = {
         tempEntities = map.getEntitiesWithinRadius(this.getX(), this.getY(), this.getZ(), 40)
             for (i = 0; i < tempEntities.length; i++) {
                     if (tempEntities[i].hasMixin('Prop')) {
-                        targetX = y;
-                        targetY = x;
                         target = tempEntities[i]           
                     } 
                 }               
@@ -73,10 +69,11 @@ Game.EntityMixins.VillagerAI = {
 
 
         // If we are adjacent to the target, then attack instead of hunting.
-        var offsets = Math.abs(targetX - this.getX()) +
-            Math.abs(targetY - this.getY());
+        var offsets = Math.abs(target.getX() - this.getX()) +
+            Math.abs(target.getY() - this.getY());
         if (offsets === 1) {
-            console.log("here");        
+            target.setProgress(null, 10);
+            console.log(target.getProgress());       
             return;
         }
 
