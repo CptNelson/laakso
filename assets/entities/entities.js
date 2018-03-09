@@ -37,7 +37,7 @@ Game.EntityRepository.define('construct', {
     name: 'construct',
     character: '¤',
     foreground: 'goldenrod',
-    maxProgress: 100,
+    maxProgress: 1000,
     progress: 1,
     mixins: [Game.EntityMixins.Buildable, Game.EntityMixins.Prop]
 },{

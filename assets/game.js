@@ -3,6 +3,7 @@ var Game =  {
     _currentScreen: null,
     _screenWidth: 40,
     _screenHeight: 20,
+    _turn: 1,
 	init: function() {
         // Any necessary initialization will go here.
         this._display = new ROT.Display({fontSize: 15, width: this._screenWidth,
@@ -24,6 +25,12 @@ var Game =  {
         bindEventToScreen('keydown');
         //bindEventToScreen('keyup');
         bindEventToScreen('keypress');
+    },
+    getTurn: function() {
+        return this._turn;
+    },
+    setTurn: function(turn) {
+        this._turn = turn;
     },
 	getDisplay: function() {
 		return this._display;

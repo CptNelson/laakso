@@ -532,6 +532,5 @@ Game.EntityMixins.Buildable = {
             this.getMap()._tiles[this.getZ()][this.getX()][this.getY()] = Game.Tile.wallTile;
             this.kill();
         }        
-    }
-    
+    }   
 };

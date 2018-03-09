@@ -20,6 +20,9 @@ Game.EntityMixins.PlayerAI = {
         this.getMap().getEngine().lock();
         // Clear the message queue
         this.clearMessages();
+        
+        Game.setTurn(this.getMap().getEngine()._scheduler.getTime())
+
         this._acting = false;
     }
 };

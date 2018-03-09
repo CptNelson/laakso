@@ -9,7 +9,7 @@ Game.EntityMixins.VillagerAI = {
     act: function () {
         // Iterate through all our tasks
         for (var i = 0; i < this._tasks.length; i++) {
-            console.log(this._tasks[i]);
+
             if (this.canDoTask(this._tasks[i])) {
 
                 // If we can perform the task, execute the function for it.
@@ -68,12 +68,12 @@ Game.EntityMixins.VillagerAI = {
 
 
 
-        // If we are adjacent to the target, then attack instead of hunting.
+        // If we are adjacent to the target, then start building.
         var offsets = Math.abs(target.getX() - this.getX()) +
             Math.abs(target.getY() - this.getY());
         if (offsets === 1) {
-            target.setProgress(null, 10);
-            console.log(target.getProgress());       
+            target.setProgress(null, 1);
+            //console.log(target.getProgress());       
             return;
         }
 

@@ -11,6 +11,11 @@ Game.extend = function(src, dest) {
     return result;
 };
 
+Game.Clock = function() {
+    
+}
+
+
 /**
  * There are two ways to instantiate this: one with functions for goals and skip in order to be able to recalculate the dijkstra map, or, with a static list of goals and skips for a static dijkstra map
  *
