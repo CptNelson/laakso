@@ -27,7 +27,7 @@ Game.EntityRepository.define('villager', {
     maxHp: 10,
     attackValue: 4,
     //speed: 1000,
-    mixins: [Game.EntityMixins.VillagerAI,
+    mixins: [Game.EntityMixins.VillagerAI, Game.EntityMixins.Carpenter,
              Game.EntityMixins.Attacker, Game.EntityMixins.Destructible,
              Game.EntityMixins.CorpseDropper,
              Game.EntityMixins.ExperienceGainer, Game.EntityMixins.RandomStatGainer]

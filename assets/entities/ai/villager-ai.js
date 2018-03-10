@@ -72,9 +72,15 @@ Game.EntityMixins.VillagerAI = {
         var offsets = Math.abs(target.getX() - this.getX()) +
             Math.abs(target.getY() - this.getY());
         if (offsets === 1) {
+            targetTile = target.getMap().getTile(target.getX(),target.getY(),0)
+            if (targetTile == Game.Tile.treeTile){
+                this.cutTree(target, target.getMap().getTile(target.getX(),target.getY(),0));
+                return;
+            } else {
             target.setProgress(null, 10);
             //console.log(target.getProgress());       
             return;
+        }
         }
 
         // Generate the path and move to the first tile.

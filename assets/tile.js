@@ -3,11 +3,12 @@ Game.Tile = function(properties) {
     // Call the Glyph constructor with our properties
     Game.Glyph.call(this, properties);
     // Set up the properties. We use false by default.
+    this._hitpoints = properties['hitpoints'] || 100;
     this._walkable = properties['walkable'] || false;
     this._diggable = properties['diggable'] || false;
     this._blocksLight = (properties['blocksLight'] !== undefined) ?
         properties['blocksLight'] : true;
-    this._description = properties['description'] || '';
+    this._description = properties['description'] || '';    
 };
 // Make tiles inherit all the functionality from glyphs
 Game.Tile.extend(Game.Glyph);
@@ -25,6 +26,12 @@ Game.Tile.prototype.isBlockingLight = function() {
 Game.Tile.prototype.getDescription = function() {
     return this._description;
 };
+Game.Tile.prototype.getHitpoints= function() {
+    return this._hitpoints;
+};
+Game.Tile.prototype.setHitpoints = function(amount) {
+    this._hitpoints -= amount;
+}
 
 Game.Tile.nullTile = new Game.Tile({description: '(unknown)'});
 Game.Tile.floorTile = new Game.Tile({
@@ -64,7 +71,13 @@ Game.Tile.treeTile = new Game.Tile({
     foreground: 'green',
     walkable: true,
     blocksLight: true,
-    description: 'A pine tree'
+    description: 'A pine tree',
+    hitpoints: 50,
+    doDamage: function() {
+        this.hitpoints -= 5;
+        console.log("auts");
+        
+    }
 });
 Game.Tile.yellowTreeTile = new Game.Tile({
     character: '▲',

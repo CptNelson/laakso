@@ -538,9 +538,18 @@ Game.EntityMixins.Carpenter = {
     name: 'Carpenter',
     groupName: 'Villager',
     init: function(template) {
-
+    
     },
-    cutTree: function() {
-        
+    cutTree: function(targetProp, target) {
+        target.setHitpoints(10)
+        console.log(target.getHitpoints());
+        if (target.getHitpoints() <= 0) {
+            targetProp.getMap()._tiles[targetProp.getZ()][targetProp.getX()][targetProp.getY()] = Game.Tile.floorTile;
+            console.log("x: ",targetProp.getX(), "y: ", targetProp.getY());
+            targetProp.kill();
+            console.log(target);
+            
+            
+        }
     }
-}
+};

@@ -2,6 +2,8 @@ Game.EntityMixins.PlayerAI = {
     name: 'PlayerActor',
     groupName: 'Actor',
     act: function() {
+        console.log(this.getX(), this.getY());
+        
         if (this._acting) {
             return;
         }
