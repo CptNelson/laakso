@@ -534,3 +534,13 @@ Game.EntityMixins.Buildable = {
         }        
     }   
 };
+Game.EntityMixins.Carpenter = {
+    name: 'Carpenter',
+    groupName: 'Villager',
+    init: function(template) {
+
+    },
+    cutTree: function() {
+        
+    }
+}
