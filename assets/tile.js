@@ -4,6 +4,7 @@ Game.Tile = function(properties) {
     Game.Glyph.call(this, properties);
     // Set up the properties. We use false by default.
     this._hitpoints = properties['hitpoints'] || 100;
+    this._size = properties['size'] || 10;
     this._walkable = properties['walkable'] || false;
     this._diggable = properties['diggable'] || false;
     this._blocksLight = (properties['blocksLight'] !== undefined) ?
@@ -32,6 +33,9 @@ Game.Tile.prototype.getHitpoints= function() {
 Game.Tile.prototype.setHitpoints = function(amount) {
     this._hitpoints -= amount;
 }
+Game.Tile.prototype.getSize = function() {
+    return this._size;
+};
 
 Game.Tile.nullTile = new Game.Tile({description: '(unknown)'});
 Game.Tile.floorTile = new Game.Tile({
@@ -72,12 +76,7 @@ Game.Tile.treeTile = new Game.Tile({
     walkable: true,
     blocksLight: true,
     description: 'A pine tree',
-    hitpoints: 50,
-    doDamage: function() {
-        this.hitpoints -= 5;
-        console.log("auts");
-        
-    }
+    hitpoints: 50
 });
 Game.Tile.yellowTreeTile = new Game.Tile({
     character: '▲',

@@ -45,6 +45,12 @@ Game.ItemRepository.define('rock', {
     foreground: 'white'
 });
 
+Game.ItemRepository.define('wood', {
+    name: 'wood',
+    character: '|',
+    foreground: 'brown'
+});
+
 // Weapons
 Game.ItemRepository.define('dagger', {
     name: 'dagger',

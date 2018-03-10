@@ -52,43 +52,43 @@ Game.EntityMixins.VillagerAI = {
 
         // console.log(map.getHeight());
         tempEntities = map.getEntitiesWithinRadius(this.getX(), this.getY(), this.getZ(), 40)
-            for (i = 0; i < tempEntities.length; i++) {
-                    if (tempEntities[i].hasMixin('Prop')) {
-                        target = tempEntities[i]           
-                    } 
-                }               
+        for (i = 0; i < tempEntities.length; i++) {
+            if (tempEntities[i].hasMixin('Prop')) {
+                target = tempEntities[i]
+            }
+        }
         //console.log(target);
-        
-        if (target == null){
-           // console.log("23");          
+
+        if (target == null) {
+            // console.log("23");          
             this.wander()
             return
         }
-      //  console.log(target);
+        //  console.log(target);
 
 
 
-        // If we are adjacent to the target, then start building.
+        // If we are adjacent to the target, then start building/cutting
         var offsets = Math.abs(target.getX() - this.getX()) +
             Math.abs(target.getY() - this.getY());
         if (offsets === 1) {
-            targetTile = target.getMap().getTile(target.getX(),target.getY(),0)
-            if (targetTile == Game.Tile.treeTile){
-                this.cutTree(target, target.getMap().getTile(target.getX(),target.getY(),0));
+            targetTile = target.getMap().getTile(target.getX(), target.getY(), 0)
+            if (targetTile == Game.Tile.treeTile) {
+                this.cutTree(target, targetTile);
                 return;
             } else {
-            target.setProgress(null, 10);
-            //console.log(target.getProgress());       
-            return;
-        }
+                target.setProgress(null, 10);
+                //console.log(target.getProgress());       
+                return;
+            }
         }
 
         // Generate the path and move to the first tile.
         var source = this;
         var z = source.getZ();
         var path = new ROT.Path.AStar(target.getX(), target.getY(), function (x, y) {
-   
-            
+
+
             // If an entity is present at the tile, can't move there.
             var entity = source.getMap().getEntityAt(x, y, z);
             if (entity && entity !== target && entity !== source) {
@@ -101,7 +101,7 @@ Game.EntityMixins.VillagerAI = {
         var count = 0;
         path.compute(source.getX(), source.getY(), function (x, y) {
             if (count == 1) {
-              
+
                 source.tryMove(x, y, z);
             }
             count++;

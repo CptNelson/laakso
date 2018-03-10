@@ -3,7 +3,7 @@
 Game.Date = function (){
     seconds = null,
     minutes = null,
-    hours = null,
+    hours = null,            console.log(target.getProgress());    
     days = null,
     months = null,
     years = null
