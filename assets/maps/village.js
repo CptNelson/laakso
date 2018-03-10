@@ -52,7 +52,7 @@ Game.Map.Village = function (tiles, player) {
     for (times = 0; times < 4; times++) {
         for (x = 0; x < this._tiles[0].length; x++) {
             for (y = 0; y < this._tiles[0][0].length; y++) {
-                if (this._tiles[0][y][x] == Game.Tile.treeTile)  {
+                if (this._tiles[0][y][x] == Game.Tile.treeTile) {
                     i = Math.floor(Math.random() * (4))
                     if (i == 1) {
                         console.log("asd");
@@ -61,7 +61,7 @@ Game.Map.Village = function (tiles, player) {
                         var yOffset = Math.floor(Math.random() * 3) - 1;
                         if (xOffset != 0 || yOffset != 0) {
 
-                          //  this._tiles[0][y + xOffset][x + yOffset] = Game.Tile.treeTile;
+                            //  this._tiles[0][y + xOffset][x + yOffset] = Game.Tile.treeTile;
                         }
                     }
                 }
@@ -85,10 +85,14 @@ Game.Map.Village = function (tiles, player) {
 
 
     this.addEntityAtRandomPosition(player, 0);
+    for (items = 0; items < 4; items++) {
+        player.addItem(Game.ItemRepository.createRandom())
+    }
     for (i = 0; i < 4; i++) {
         var entity = Game.EntityRepository.createRandom();
         entity._name = Game.NameGenerator();
         this.addEntityAtRandomPosition(entity, 0);
+
     }
 
 };

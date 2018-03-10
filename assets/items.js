@@ -1,43 +1,44 @@
 Game.ItemRepository = new Game.Repository('items', Game.Item);
 
+//======FOOD======
+
 Game.ItemRepository.define('apple', {
     name: 'apple',
     character: '%',
     foreground: 'red',
-    foodValue: 50,
+    foodValue: 40,
     mixins: [Game.ItemMixins.Edible]
 });
 
-Game.ItemRepository.define('melon', {
-    name: 'melon',
+Game.ItemRepository.define('mushroom', {
+    name: 'mushroom',
     character: '%',
-    foreground: 'lightGreen',
-    foodValue: 35,
-    consumptions: 4,
+    foreground: 'lightBrown',
+    foodValue: 15,
+    consumptions: 1,
     mixins: [Game.ItemMixins.Edible]
 });
 
-Game.ItemRepository.define('pumpkin', {
-    name: 'pumpkin',
+Game.ItemRepository.define('bread', {
+    name: 'bread',
     character: '%',
-    foreground: 'orange',
-    foodValue: 50,
-    attackValue: 2,
-    defenseValue: 2,
-    wearable: true,
-    wieldable: true,
-    mixins: [Game.ItemMixins.Edible, Game.ItemMixins.Equippable]
+    foreground: 'brown',
+    foodValue: 30,
+    consumptions: 3,
+    mixins: [Game.ItemMixins.Edible]
 });
 
 Game.ItemRepository.define('corpse', {
     name: 'corpse',
     character: '%',
     foodValue: 75,
-    consumptions: 1,
+    consumptions: 4,
     mixins: [Game.ItemMixins.Edible]
 }, {
     disableRandomCreation: true
 });
+
+// ======MATERIALS========
 
 Game.ItemRepository.define('rock', {
     name: 'rock',
@@ -51,7 +52,8 @@ Game.ItemRepository.define('wood', {
     foreground: 'brown'
 });
 
-// Weapons
+// ======WEAPONS=========
+
 Game.ItemRepository.define('dagger', {
     name: 'dagger',
     character: ')',
@@ -60,14 +62,25 @@ Game.ItemRepository.define('dagger', {
     wieldable: true,
     mixins: [Game.ItemMixins.Equippable]
 }, {
-    disableRandomCreation: true
+    disableRandomCreation: false
+});
+Game.ItemRepository.define('axe', {
+    name: 'axe',
+    character: ')',
+    foreground: 'gray',
+    attackValue: Math.floor(Math.random() * 5) + 5,
+    wieldable: true,
+    mixins: [Game.ItemMixins.Equippable]
+}, {
+    disableRandomCreation: false
 });
 
 Game.ItemRepository.define('sword', {
     name: 'sword',
     character: ')',
     foreground: 'white',
-    attackValue: 10,
+    attackValue: Math.floor(Math.random() * 3) + 7,
+    defenceValue: 2,
     wieldable: true,
     mixins: [Game.ItemMixins.Equippable]
 }, {
@@ -83,20 +96,41 @@ Game.ItemRepository.define('staff', {
     wieldable: true,
     mixins: [Game.ItemMixins.Equippable]
 }, {
-    disableRandomCreation: true
+    disableRandomCreation: false
 });
 
-// Wearables
-Game.ItemRepository.define('tunic', {
+Game.ItemRepository.define('shortbow', {
+    name: 'shortbow',
+    character: ')',
+    foreground: 'brown',
+    attackValue: 5,
+    wieldable: true,
+    mixins: [Game.ItemMixins.Equippable]
+}, {
+    disableRandomCreation: false
+});
+
+// ======WEARABLES========
+Game.ItemRepository.define('good tunic', {
     name: 'tunic',
     character: '[',
     foreground: 'green',
+    defenseValue: 1,
+    wearable: true,
+    mixins: [Game.ItemMixins.Equippable]
+}, {
+    disableRandomCreation: false
+})
+Game.ItemRepository.define('leather tunic', {
+    name: 'leather tunic',
+    character: '[',
+    foreground: 'lightBrown',
     defenseValue: 2,
     wearable: true,
     mixins: [Game.ItemMixins.Equippable]
 }, {
-    disableRandomCreation: true
-});
+    disableRandomCreation: false
+});;
 
 Game.ItemRepository.define('chainmail', {
     name: 'chainmail',
@@ -109,13 +143,3 @@ Game.ItemRepository.define('chainmail', {
     disableRandomCreation: true
 });
 
-Game.ItemRepository.define('platemail', {
-    name: 'platemail',
-    character: '[',
-    foreground: 'aliceblue',
-    defenseValue: 6,
-    wearable: true,
-    mixins: [Game.ItemMixins.Equippable]
-}, {
-    disableRandomCreation: true
-});
