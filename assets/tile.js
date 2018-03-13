@@ -40,10 +40,19 @@ Game.Tile.prototype.getSize = function() {
 Game.Tile.nullTile = new Game.Tile({description: '(unknown)'});
 Game.Tile.floorTile = new Game.Tile({
     character: '.',
+    foreground: 'yellowgreen',
     walkable: true,
     blocksLight: false,
-    description: 'A cave floor'
+    description: 'Some dirt and plants and shit'
 });
+Game.Tile.groundTile = new Game.Tile({
+    character: '.',
+    foreground: 'brown',
+    walkable: true,
+    blocksLight: false,
+    description: 'Some dirt and plants and shit'
+});
+
 Game.Tile.wallTile = new Game.Tile({
     character: '#',
     foreground: 'goldenrod',
@@ -84,6 +93,13 @@ Game.Tile.yellowTreeTile = new Game.Tile({
     walkable: true,
     blocksLight: true,
     description: 'A pine tree'
+});
+Game.Tile.yellowBushTile = new Game.Tile({
+    character: ',',
+    foreground: 'yellowgreen',
+    walkable: true,
+    blocksLight: false,
+    description: 'small bush'
 });
 
 // Helper function

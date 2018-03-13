@@ -61,7 +61,7 @@ Game.Map.Village = function (tiles, player) {
                         var yOffset = Math.floor(Math.random() * 3) - 1;
                         if (xOffset != 0 || yOffset != 0) {
 
-                            //  this._tiles[0][y + xOffset][x + yOffset] = Game.Tile.treeTile;
+                              this._tiles[0][y + xOffset][x + yOffset] = Game.Tile.treeTile;
                         }
                     }
                 }
@@ -74,10 +74,16 @@ Game.Map.Village = function (tiles, player) {
         for (y = 0; y < this._tiles[0].length; y++) {
             i = Math.floor(Math.random() * (25))
             if (i == 8) {
-                //  this._tiles[0][y][x] = Game.Tile.yellowTreeTile;
+                  this._tiles[0][y][x] = Game.Tile.yellowTreeTile;
             }
             if (i == 9) {
-                // this._tiles[0][y][x] = Game.Tile.treeTile;
+                 this._tiles[0][y][x] = Game.Tile.treeTile;
+            }
+            if (this._tiles[0][y][x] == Game.Tile.floorTile) {
+                b = Math.floor(Math.random() * (3))
+                if (b == 1) {
+                    this._tiles[0][y][x] = Game.Tile.yellowBushTile;    
+                }           
             }
         }
     }

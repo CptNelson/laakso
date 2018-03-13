@@ -470,6 +470,7 @@ Game.Screen.pickupScreen = new Game.Screen.ItemListScreen({
     caption: 'Choose the items you wish to pickup',
     canSelect: true,
     canSelectMultipleItems: true,
+    
     ok: function(selectedItems) {
         // Try to pick up all items, messaging the player if they couldn't all be
         // picked up.
@@ -785,6 +786,7 @@ Game.Screen.helpScreen = {
         display.drawText(0, y++, '[W] to wear items');
         display.drawText(0, y++, '[x] to examine it ems');
         display.drawText(0, y++, '[l] to look around you');
+        display.drawText(0, y++, '[m] to mark spot for workers');
         display.drawText(0, y++, '[?] to show this help screen');
         y += 3;
         text = '--- press any key to continue ---';
