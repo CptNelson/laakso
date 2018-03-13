@@ -11,7 +11,7 @@ Game.PlayerTemplate = {
              Game.EntityMixins.Attacker, Game.EntityMixins.Destructible,
              Game.EntityMixins.InventoryHolder, Game.EntityMixins.FoodConsumer,
              Game.EntityMixins.Sight, Game.EntityMixins.MessageRecipient,
-             Game.EntityMixins.Equipper,
+             Game.EntityMixins.Equipper, Game.EntityMixins.Human,
              Game.EntityMixins.ExperienceGainer, Game.EntityMixins.PlayerStatGainer]
 };
 
@@ -29,8 +29,22 @@ Game.EntityRepository.define('villager', {
     //speed: 1000,
     mixins: [Game.EntityMixins.VillagerAI, Game.EntityMixins.Carpenter,
              Game.EntityMixins.Attacker, Game.EntityMixins.Destructible,
-             Game.EntityMixins.CorpseDropper,
+             Game.EntityMixins.CorpseDropper, Game.EntityMixins.Sight,
+             Game.EntityMixins.Human,
              Game.EntityMixins.ExperienceGainer, Game.EntityMixins.RandomStatGainer]
+});
+
+Game.EntityRepository.define('maahinen', {
+    name: 'maahinen',
+    character: 'm',
+    foreground: 'brown',
+    maxHp: 13,
+    sightRadius: 18,
+    attackValue: 5,
+    //speed: 1000,
+    mixins: [Game.EntityMixins.MaahinenAI, Game.EntityMixins.Destructible,
+             Game.EntityMixins.ExperienceGainer, Game.EntityMixins.RandomStatGainer,
+             Game.EntityMixins.Attacker, Game.EntityMixins.Sight]
 });
 
 Game.EntityRepository.define('construct', {

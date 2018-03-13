@@ -40,7 +40,6 @@ Game.Tile.prototype.getSize = function() {
 Game.Tile.nullTile = new Game.Tile({description: '(unknown)'});
 Game.Tile.floorTile = new Game.Tile({
     character: '.',
-    foreground: 'yellowgreen',
     walkable: true,
     blocksLight: false,
     description: 'Some dirt and plants and shit'

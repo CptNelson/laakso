@@ -80,7 +80,7 @@ Game.Map.Village = function (tiles, player) {
                  this._tiles[0][y][x] = Game.Tile.treeTile;
             }
             if (this._tiles[0][y][x] == Game.Tile.floorTile) {
-                b = Math.floor(Math.random() * (3))
+                b = Math.floor(Math.random() * (6))
                 if (b == 1) {
                     this._tiles[0][y][x] = Game.Tile.yellowBushTile;    
                 }           

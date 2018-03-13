@@ -1,6 +1,12 @@
 // Create our Mixins namespace
 Game.EntityMixins = {};
 
+
+Game.EntityMixins.Human = {
+    name: 'Human',
+    groupName: 'Actor'
+}
+
 // This signifies our entity can attack basic destructible enities
 Game.EntityMixins.Attacker = {
     name: 'Attacker',
