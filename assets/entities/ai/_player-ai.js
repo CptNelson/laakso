@@ -22,7 +22,7 @@ Game.EntityMixins.PlayerAI = {
         this.getMap().getEngine().lock();
         // Clear the message queue
         this.clearMessages();
-        
+        // set new turn 
         this.getMap().setTurn(this.getMap().getEngine()._scheduler.getTime(), this.getMap())
         console.log("turn: ", this.getMap().getTurn());
          
