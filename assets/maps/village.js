@@ -98,7 +98,7 @@ Game.Map.Village = function (tiles, player) {
     for (i = 0; i < 4; i++) {
         var villager = Game.EntityRepository.create('villager');
         villager._name = Game.NameGenerator();
-        this.addEntityAtRandomPosition(villager, 0);
+        //this.addEntityAtRandomPosition(villager, 0);
 
     }
 

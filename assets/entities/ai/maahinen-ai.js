@@ -4,7 +4,7 @@ Game.EntityMixins.MaahinenAI = {
     init: function (template) {
 
         // Load tasks
-        this._tasks = template['tasks'] || ['hunt', 'wander'];
+        this._tasks = template['tasks'] || ['hunt','goToCenter', 'wander'];
     },
     act: function () {
         // Iterate through all our tasks
@@ -27,8 +27,48 @@ Game.EntityMixins.MaahinenAI = {
             throw new Error('Tried to perform undefined task ' + task);
         }
     },
+    goToCenter: function () {
+        console.log("going");
+        
+        map = this.getMap();
+        centerY = map.getWidth() / 2;
+        centerX = map.getHeight() / 2;
+        console.log(centerX, " ", centerY);
+        
+               // If we are adjacent to the center, then attack
+        var offsets = Math.abs(centerX - this.getX()) +
+               Math.abs(centerY - this.getY());
+           if (offsets === 1) {
+                   this.wander();
+                   return;
+           }
+   
+           // Generate the path and move to the first tile.
+           var source = this;
+           var z = source.getZ();
+           var path = new ROT.Path.AStar(centerX, centerY, function (x, y) {
+   
+   
+               // If an entity is present at the tile, can't move there.
+               var entity = source.getMap().getEntityAt(x, y, z);
+               if (entity && entity !== source) {
+                   return false;
+               }
+               console.log("asdasf");
+               return source.getMap().getTile(x, y, z).isWalkable();
+           }, { topology: 8 });
+           // Once we've gotten the path, we want to move to the second cell that is
+           // passed in the callback (the first is the entity's strting point)
+           var count = 0;
+           path.compute(source.getX(), source.getY(), function (x, y) {
+               if (count == 1) {
+                   source.tryMove(x, y, z);
+               }
+               count++;
+           });
+       },
     wander: function () {
-
+        
         // Flip coin to determine if moving by 1 in the positive or negative direction
         var moveOffset = (Math.round(Math.random()) === 1) ? 1 : -1;
 
@@ -43,6 +83,7 @@ Game.EntityMixins.MaahinenAI = {
     hunt: function () {
         map = this.getMap()
         target = null;
+        
 
         /* 
             check if there's construction tiles in the map
@@ -51,7 +92,7 @@ Game.EntityMixins.MaahinenAI = {
         */
 
         // console.log(map.getHeight());
-        tempEntities = map.getEntitiesWithinRadius(this.getX(), this.getY(), this.getZ(), 12)
+        tempEntities = map.getEntitiesWithinRadius(this.getX(), this.getY(), this.getZ(), 7)
         for (i = 0; i < tempEntities.length; i++) {
             if (tempEntities[i].hasMixin('Human')) {
                 target = tempEntities[i]
@@ -60,8 +101,7 @@ Game.EntityMixins.MaahinenAI = {
         //console.log(target);
 
         if (target == null) {
-            // console.log("23");          
-            this.wander()
+            this.goToCenter()
             return
         }
         //  console.log(target);
