@@ -53,6 +53,15 @@ Game.ItemRepository.define('wood', {
 });
 
 // ======WEAPONS=========
+Game.ItemRepository.define('shortbow', {
+    name: 'shortbow',
+    character: ')',
+    foreground: 'brown',
+    archeryValue: 5,
+    range: 8,
+    wieldable: true,
+    mixins: [Game.ItemMixins.Equippable]
+});
 
 Game.ItemRepository.define('dagger', {
     name: 'dagger',

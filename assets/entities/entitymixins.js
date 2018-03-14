@@ -11,20 +11,21 @@ Game.EntityMixins.Archer = {
     name: 'Archer',
     groupName: 'Attacker',
     init: function (template) {
-        this._archeryValue = template['archeryValue'] || 1;
+        this._archeryValue = template['archeryValue'] || 0;
     },
-    getArcheryValue: function () {
+    getArcheryValue: function () {       
         var modifier = 0;
         // check for equipment
         if (this.hasMixin(Game.EntityMixins.Equipper)) {
-            if (this.getWeapon()) {
+            if (this.getWeapon()) {  
                 modifier += this.getWeapon().getArcheryValue();
             }
             if (this.getArmor()) {
                 modifier += this.getArmor().getArcheryValue();
             }
         }
-        return this.archeryValue + modifier
+        
+        return this._archeryValue + modifier
     },
     increaseArcheryValue: function (value) {
         // If no value was passed, default to 2.
@@ -37,10 +38,15 @@ Game.EntityMixins.Archer = {
         // If the target is destructible, calculate the damage
         // based on attack and defense value
         if (target.hasMixin('Destructible')) {
+            console.log(this.getDefenseValue());
+            
             var archery = this.getArcheryValue();
+            
             var defense = target.getDefenseValue();
             var max = Math.max(0, archery - defense);
-            var damage = 1 + Math.floor(Math.random() * 3);
+            console.log(archery);
+            
+            var damage = 1 + Math.floor(Math.random() * max);
 
             Game.sendMessage(this, 'You shoot %s for %d damage!',
                 [target.getName(), damage]);
