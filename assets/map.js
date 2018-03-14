@@ -165,6 +165,28 @@ Game.Map.prototype.getRandomFloorPosition = function(z) {
     return {x: x, y: y, z: z};
 };
 
+Game.Map.prototype.getRandomBorderPosition = function(z) {
+    // Randomly generate a tile from the map border, which is a floor
+    var x, y;
+    do {
+        dir = Math.floor(Math.random() * 4)
+        if (dir == 0) {
+            x = Math.floor(Math.random() * this._width);
+            y = 0;
+        } else if (dir == 1) {
+            y = Math.floor(Math.random() * this._height);
+            x = 0
+        } else if (dir == 2) {
+            x = Math.floor(Math.random() * this._width);
+            y = this._height;
+        } else if (dir == 3) {
+            y = Math.floor(Math.random() * this._height);
+            x = this._width;
+        }            
+    } while(!this.isEmptyFloor(x, y, z));
+    return {x: x, y: y, z: z};
+};
+
 Game.Map.prototype.addEntityAtRandomPosition = function(entity, z, repeat, time) {
     var position = this.getRandomFloorPosition(z);
     entity.setX(position.x);
@@ -173,6 +195,17 @@ Game.Map.prototype.addEntityAtRandomPosition = function(entity, z, repeat, time)
     
     this.addEntity(entity, repeat, time);
 };
+
+Game.Map.prototype.addEntityAtBorder = function(entity, z, repeat, time) {
+    var position = this.getRandomBorderPosition(z);
+    entity.setX(position.x);
+    entity.setY(position.y);
+    entity.setZ(position.z);  
+    console.log(position.x, position.y);
+    
+    this.addEntity(entity, repeat, time);
+};
+
 
 Game.Map.prototype.addEntityHere = function(entity, map) {
     console.log();
