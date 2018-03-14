@@ -183,6 +183,15 @@ Game.Screen.playScreen = {
                 this.wait();
             } else if (inputData.keyCode === ROT.VK_M) {
                 this.markForBuilding();
+            } else if (inputData.keyCode === ROT.VK_1) {
+                    // Setup the look screen.
+                    var offsets = this.getScreenOffsets();
+                    Game.Screen.targetScreen.setup(this._player,
+                        this._player.getX(), this._player.getY(),
+                        offsets.x, offsets.y);
+                    this.setSubScreen(Game.Screen.targetScreen);
+                    
+                    return;
             } else if (inputData.keyCode === ROT.VK_I) {
                 // Show the inventory screen
                 scr = Game.Screen.inventoryScreen
@@ -674,6 +683,17 @@ Game.Screen.TargetBasedScreen.prototype.render = function(display) {
     for (var i = 0, l = points.length; i < l; i++) {
         display.drawText(points[i].x, points[i].y, '%c{magenta}*');
     }
+
+    var messages = this._player.getMessages();
+    var messageY = 22;
+    for (var i = 0; i < messages.length; i++) {
+        // Draw each message, adding the number of lines
+        messageY += display.drawText(
+            0, 
+            messageY,
+            '%c{white}%b{black}' + messages[i]
+        );
+    }
     
     var stats = '%c{greenyellow}%b{black}';
     stats += vsprintf('HP: %d/%d L: %d XP: %d', 
@@ -703,8 +723,10 @@ Game.Screen.TargetBasedScreen.prototype.handleInput = function(inputType, inputD
             this.moveCursor(0, 1);
         } else if (inputData.keyCode === ROT.VK_ESCAPE) {
             Game.Screen.playScreen.setSubScreen(undefined);
-        } else if (inputData.keyCode === ROT.VK_RETURN) {
+        } else if (inputData.keyCode === ROT.VK_RETURN) { 
             this.executeOkFunction();
+        } else if (inputData.keyCode === ROT.VK_1) {
+            this.missile();
         }
     }
     Game.refresh();
@@ -725,7 +747,9 @@ Game.Screen.TargetBasedScreen.prototype.executeOkFunction = function() {
         this._player.getMap().getEngine().unlock();
     }
 };
+Game.Screen.targetScreen = new Game.Screen.TargetBasedScreen({
 
+});
 
 Game.Screen.lookScreen = new Game.Screen.TargetBasedScreen({
     captionFunction: function(x, y) {
@@ -768,6 +792,20 @@ Game.Screen.lookScreen = new Game.Screen.TargetBasedScreen({
         }
     }
 });
+
+Game.Screen.TargetBasedScreen.prototype.missile = function() {
+    //get entity at cursor
+    var z = this._player.getZ();
+    var map = this._player.getMap();
+    var entity = map.getEntityAt(this._cursorX + this._offsetX, this._cursorY + this._offsetY, z);
+
+// Switch back to the play screen and shoot the enemy.
+this._player.getMap().getEngine().unlock();
+Game.Screen.playScreen.setSubScreen(undefined);
+this._player.shoot(entity);
+
+
+};
 
 // Define our help screen
 Game.Screen.helpScreen = {

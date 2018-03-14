@@ -7,6 +7,55 @@ Game.EntityMixins.Human = {
     groupName: 'Actor'
 }
 
+Game.EntityMixins.Archer = {
+    name: 'Archer',
+    groupName: 'Attacker',
+    init: function (template) {
+        this._archeryValue = template['archeryValue'] || 1;
+    },
+    getArcheryValue: function () {
+        var modifier = 0;
+        // check for equipment
+        if (this.hasMixin(Game.EntityMixins.Equipper)) {
+            if (this.getWeapon()) {
+                modifier += this.getWeapon().getArcheryValue();
+            }
+            if (this.getArmor()) {
+                modifier += this.getArmor().getArcheryValue();
+            }
+        }
+        return this.archeryValue + modifier
+    },
+    increaseArcheryValue: function (value) {
+        // If no value was passed, default to 2.
+        value = value || 2;
+        // Add to the attack value.
+        this._archeryValue += 2;
+        Game.sendMessage(this, "You got better at shooting things!");
+    },
+    shoot: function (target) {
+        // If the target is destructible, calculate the damage
+        // based on attack and defense value
+        if (target.hasMixin('Destructible')) {
+            var archery = this.getArcheryValue();
+            var defense = target.getDefenseValue();
+            var max = Math.max(0, archery - defense);
+            var damage = 1 + Math.floor(Math.random() * 3);
+
+            Game.sendMessage(this, 'You shoot %s for %d damage!',
+                [target.getName(), damage]);
+            Game.sendMessage(target, '%s shoots you for %d damage!',
+                [this.getName(), damage]);
+
+            target.takeDamage(this, damage);
+        }
+    },
+    listeners: {
+        details: function () {
+            return [{ key: 'shoot', value: this.getArcheryValue() }];
+        }
+    }
+}
 // This signifies our entity can attack basic destructible enities
 Game.EntityMixins.Attacker = {
     name: 'Attacker',
