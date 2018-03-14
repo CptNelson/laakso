@@ -94,12 +94,17 @@ Game.Map.Village = function (tiles, player) {
     for (items = 0; items < 4; items++) {
         player.addItem(Game.ItemRepository.createRandom())
     }
+
     for (i = 0; i < 4; i++) {
-        var entity = Game.EntityRepository.createRandom();
-        entity._name = Game.NameGenerator();
-        this.addEntityAtRandomPosition(entity, 0);
+        var villager = Game.EntityRepository.create('villager');
+        villager._name = Game.NameGenerator();
+        this.addEntityAtRandomPosition(villager, 0);
 
     }
+
+
+
+
 
 };
 Game.Map.Village.extend(Game.Map);

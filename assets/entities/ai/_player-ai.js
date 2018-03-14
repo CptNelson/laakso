@@ -23,7 +23,9 @@ Game.EntityMixins.PlayerAI = {
         // Clear the message queue
         this.clearMessages();
         
-        Game.setTurn(this.getMap().getEngine()._scheduler.getTime())
+        this.getMap().setTurn(this.getMap().getEngine()._scheduler.getTime(), this.getMap())
+        console.log("turn: ", this.getMap().getTurn());
+         
 
         this._acting = false;
     }

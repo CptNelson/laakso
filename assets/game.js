@@ -1,13 +1,15 @@
 var Game =  {
+    _events: null,
 	_display: null,
     _currentScreen: null,
     _screenWidth: 40,
     _screenHeight: 20,
-    _turn: 1,
 	init: function() {
         // Any necessary initialization will go here.
         this._display = new ROT.Display({fontSize: 15, width: this._screenWidth,
             height: this._screenHeight + 6, forceSquareRatio:true});
+
+
         // Create a helper function for binding to an event
         // and making it send it to the screen
         var game = this; // So that we don't lose this
@@ -25,12 +27,6 @@ var Game =  {
         bindEventToScreen('keydown');
         //bindEventToScreen('keyup');
         bindEventToScreen('keypress');
-    },
-    getTurn: function() {
-        return this._turn;
-    },
-    setTurn: function(turn) {
-        this._turn = turn;
     },
 	getDisplay: function() {
 		return this._display;

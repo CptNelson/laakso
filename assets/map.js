@@ -16,6 +16,9 @@ Game.Map = function(tiles) {
     this._scheduler = new ROT.Scheduler.Action();
    // this._scheduler.next(); 
     this._engine = new ROT.Engine(this._scheduler);
+    //Setup event system and turns
+    this._events = new Game.Events();
+    this._turn = 1;
     // Setup the explored array
     this._explored = new Array(this._depth);
     this._setupExploredArray();
@@ -50,8 +53,13 @@ Game.Map.prototype.addAction = function(map, time) {
         console.log(sch.getTime())      
 };
 
-
-
+Game.Map.prototype.getTurn = function() {
+    return this._turn;
+},
+Game.Map.prototype.setTurn = function(turn, map) {
+    this._turn = turn;
+    this._events.turnDone(this._events, this._turn, map);
+},
 
 // Gets the tile for a given coordinate set
 Game.Map.prototype.getTile = function(x, y, z) {
