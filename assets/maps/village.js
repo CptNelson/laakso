@@ -91,8 +91,8 @@ Game.Map.Village = function (tiles, player) {
 
 
     this.addEntityAtRandomPosition(player, 0);
-    for (items = 0; items < 4; items++) {
-        player.addItem(Game.ItemRepository.createRandom())
+    for (items = 0; items < 1; items++) {
+        player.addItem(Game.ItemRepository.create('shortbow'))
     }
 
     for (i = 0; i < 4; i++) {

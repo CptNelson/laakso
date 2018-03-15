@@ -57,7 +57,7 @@ Game.ItemRepository.define('shortbow', {
     name: 'shortbow',
     character: ')',
     foreground: 'brown',
-    archeryValue: 5,
+    archeryValue: 3,
     range: 8,
     wieldable: true,
     mixins: [Game.ItemMixins.Equippable]
@@ -113,6 +113,7 @@ Game.ItemRepository.define('shortbow', {
     character: ')',
     foreground: 'brown',
     attackValue: 5,
+    range: 10,
     wieldable: true,
     mixins: [Game.ItemMixins.Equippable]
 }, {

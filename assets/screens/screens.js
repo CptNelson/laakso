@@ -670,6 +670,7 @@ Game.Screen.TargetBasedScreen.prototype.setup = function(player, startX, startY,
             visibleCells[x + "," + y] = true;
         });
     this._visibleCells = visibleCells;
+    this._lineLength = null;
 };
 
 Game.Screen.TargetBasedScreen.prototype.render = function(display) {
@@ -678,7 +679,8 @@ Game.Screen.TargetBasedScreen.prototype.render = function(display) {
     // Draw a line from the start to the cursor.
     var points = Game.Geometry.getLine(this._startX, this._startY, this._cursorX,
         this._cursorY);
-
+    this._lineLength = points.length;
+    
     // Render stars along the line.
     for (var i = 0, l = points.length; i < l; i++) {
         display.drawText(points[i].x, points[i].y, '%c{magenta}*');
@@ -726,7 +728,7 @@ Game.Screen.TargetBasedScreen.prototype.handleInput = function(inputType, inputD
         } else if (inputData.keyCode === ROT.VK_RETURN) { 
             this.executeOkFunction();
         } else if (inputData.keyCode === ROT.VK_1) {
-            this.missile();
+            this.missile(this._lineLength);
         }
     }
     Game.refresh();
@@ -793,16 +795,18 @@ Game.Screen.lookScreen = new Game.Screen.TargetBasedScreen({
     }
 });
 
-Game.Screen.TargetBasedScreen.prototype.missile = function() {
+Game.Screen.TargetBasedScreen.prototype.missile = function(shotRange) {
     //get entity at cursor
     var z = this._player.getZ();
     var map = this._player.getMap();
+    console.log(this._cursorX,", ",this._cursorY,", ",);
+    
     var entity = map.getEntityAt(this._cursorX + this._offsetX, this._cursorY + this._offsetY, z);
 
 // Switch back to the play screen and shoot the enemy.
 this._player.getMap().getEngine().unlock();
 Game.Screen.playScreen.setSubScreen(undefined);
-this._player.shoot(entity);
+this._player.shoot(entity, shotRange);
 
 
 };

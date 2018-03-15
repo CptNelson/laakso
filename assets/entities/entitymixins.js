@@ -34,11 +34,13 @@ Game.EntityMixins.Archer = {
         this._archeryValue += 2;
         Game.sendMessage(this, "You got better at shooting things!");
     },
-    shoot: function (target) {
+    shoot: function (target, shotRange) {
         // If the target is destructible, calculate the damage
         // based on attack and defense value
-        if (target.hasMixin('Destructible')) {
-            console.log(this.getDefenseValue());
+        console.log(this.getWeapon().getRange());
+        
+        if (target.hasMixin('Destructible') && shotRange <= this.getWeapon().getRange()) {
+            console.log(shotRange);
             
             var archery = this.getArcheryValue();
             
@@ -54,6 +56,8 @@ Game.EntityMixins.Archer = {
                 [this.getName(), damage]);
 
             target.takeDamage(this, damage);
+        } else {
+            Game.sendMessage(this, '%s is too far!', [target.getName()])
         }
     },
     listeners: {
