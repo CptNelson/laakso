@@ -98,17 +98,7 @@ Game.ItemMixins.Missile = {
         wielding = entity.getWielding();
 
         if (this._amount <= 0) {
-            console.log(wielding)
-            for (j = 0; j < wielding.length; j++) {
-                if (j == 0 && wielding[j].hasMixin('Missile')) {
-                    entity.unwieldFirst();
-                    return;
-                } else if (j == 1 && wielding[j].hasMixin('Missile')) {
-                    entity.unwieldSecond();
-                    return;
-                }
-
-            }
+            Game.sendMessage(entity, 'You have no more ammunition wielded!')
         }
         
     }

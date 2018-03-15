@@ -221,10 +221,10 @@ Game.Screen.playScreen = {
                 return;
             } else if (inputData.keyCode === ROT.VK_Q) {
 
-                    // Show the wield screen
-                    this.showItemsSubScreen(Game.Screen.wield2Screen, this._player.getItems(),
-                        'You have nothing to wield.');
-                
+                // Show the wield screen
+                this.showItemsSubScreen(Game.Screen.wield2Screen, this._player.getItems(),
+                    'You have nothing to wield.');
+
                 return;
             } else if (inputData.keyCode === ROT.VK_X) {
                 // Show the drop screen
@@ -280,9 +280,11 @@ Game.Screen.playScreen = {
     },
     checkProjectile: function () {
         wielding = this._player.getWielding();
-        if (wielding[0] != null && wielding[1] != null) {
-            if ((wielding[0].hasMixin('Bow') ||  wielding[0].hasMixin('Missile')) &&
-                ((wielding[1].hasMixin('Bow') ||  wielding[1].hasMixin('Missile')))) {
+        if (wielding[0] != null && wielding[1] != null) {
+            if ((wielding[0].hasMixin('Bow') || wielding[0].hasMixin('Missile')
+                && wielding[0].getAmount() >= 1) &&
+                ((wielding[1].hasMixin('Bow') || wielding[1].hasMixin('Missile')
+                    && wielding[0].getAmount() >= 1))) {
                 console.log("bows and missiles ready!");
                 return true;
             } else return false;
@@ -428,9 +430,9 @@ Game.Screen.ItemListScreen.prototype.render = function (display) {
             } else if (this._items[i] === wield[1]) {
                 suffix = ' (2nd hand)'
             }
-            
-            
-            
+
+
+
             // Render at the correct row and add 2.
             display.drawText(0, 2 + row, letter + ' ' + selectionState + ' ' +
                 this._items[i].describe() + ' (' + this._items[i].getAmount() + ') ' + suffix);
@@ -461,7 +463,7 @@ Game.Screen.ItemListScreen.prototype.handleInput = function (inputType, inputDat
                 (!this._canSelectItem || Object.keys(this._selectedIndices).length === 0))) {
             Game.Screen.playScreen.setSubScreen(undefined);
             // Handle pressing return when items are selected
-        
+
         } else if (inputData.keyCode === ROT.VK_RETURN) {
             this.executeOkFunction();
             // Handle pressing zero when 'no item' selection is enabled
@@ -584,7 +586,7 @@ Game.Screen.wield2Screen = new Game.Screen.ItemListScreen({
         if (keys.length === 0) {
             item = this._player.getWielding()
             this._player.unwieldSecond();
-            Game.sendMessage(this._player, "You remove %s from second hand.",[item[1].describeA()])
+            Game.sendMessage(this._player, "You remove %s from second hand.", [item[1].describeA()])
         } else {
             // Make sure to unequip the item first in case it is the armor.
             var item = selectedItems[keys[0]];
@@ -726,6 +728,7 @@ Game.Screen.TargetBasedScreen.prototype.setup = function (player, startX, startY
 Game.Screen.TargetBasedScreen.prototype.render = function (display) {
     Game.Screen.playScreen.renderTiles.call(Game.Screen.playScreen, display);
 
+
     // Render target star
     display.drawText(this._cursorX, this._cursorY, '%c{magenta}*');
 
@@ -840,12 +843,27 @@ Game.Screen.lookScreen = new Game.Screen.TargetBasedScreen({
 });
 
 Game.Screen.TargetBasedScreen.prototype.missile = function (shotRange) {
-    //get entity at cursor
     var z = this._player.getZ();
     var map = this._player.getMap();
-    console.log(this._cursorX, ", ", this._cursorY, ", ", );
 
-    var entity = map.getEntityAt(this._cursorX + this._offsetX, this._cursorY + this._offsetY, z);
+    var points = Game.Geometry.getLine(this._startX, this._startY, this._cursorX,
+        this._cursorY);
+    var entity = null;
+
+    for (var i = 1, l = points.length; i < l; i++) {
+        var x = points[i].x + this._offsetX;
+        var y = points[i].y + this._offsetY
+        if (map.getEntityAt(x,y, z)) {
+            entity = map.getEntityAt(x,y, z);
+            break;
+        }
+    }
+    if (entity == null) {
+        return;
+    }
+
+
+    //var entity = map.getEntityAt(this._cursorX + this._offsetX, this._cursorY + this._offsetY, z);
 
     // Switch back to the play screen and shoot the enemy.
     this._player.getMap().getEngine().unlock();

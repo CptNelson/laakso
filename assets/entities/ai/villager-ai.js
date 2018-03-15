@@ -61,7 +61,7 @@ Game.EntityMixins.VillagerAI = {
 
         if (target == null) {
             // console.log("23");          
-            this.wander()
+            //this.wander()
             return
         }
         //  console.log(target);
