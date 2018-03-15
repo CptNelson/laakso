@@ -79,6 +79,9 @@ Game.EntityMixins.Archer = {
                 [target.getName(), damage]);
             Game.sendMessage(target, '%s shoots you for %d damage!',
                 [this.getName(), damage]);
+            //TODO: GLOBAL MESSAGES, this one doesnt seem to work
+            Game.sendMessageNearby(target.getMap(), target.getX(), target.getY(),
+                '%s strikes %s for %d damage!'),[this.getName(), target.getName(), damage];
 
             target.takeDamage(this, damage);
         } else {
@@ -132,8 +135,9 @@ Game.EntityMixins.Attacker = {
                 [target.getName(), damage]);
             Game.sendMessage(target, '%s strikes you for %d damage!',
                 [this.getName(), damage]);
-
-            target.takeDamage(this, damage);
+            Game.sendMessageNearby(this.getMap(), entity.getX(), entity.getY(),
+                '%s strikes %s for %d damage!');
+            target.takeDamage(this.getName(), target.getName(), damage);
         }
     },
     listeners: {
