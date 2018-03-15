@@ -115,7 +115,17 @@ Game.ItemRepository.define('shortbow', {
     attackValue: 5,
     range: 10,
     wieldable: true,
-    mixins: [Game.ItemMixins.Equippable]
+    mixins: [Game.ItemMixins.Equippable, Game.ItemMixins.Bow]
+}, {
+    disableRandomCreation: false
+});
+Game.ItemRepository.define('arrow', {
+    name: 'arrow',
+    character: '/',
+    foreground: 'brown',
+    attackValue: 0,
+    wieldable: true,
+    mixins: [Game.ItemMixins.Equippable, Game.ItemMixins.Missile]
 }, {
     disableRandomCreation: false
 });

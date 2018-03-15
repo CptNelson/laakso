@@ -77,3 +77,14 @@ Game.ItemMixins.Equippable = {
         }
     }
 };
+
+Game.ItemMixins.Bow = {
+    name: 'Bow',
+    init: function(template) {
+    }
+};
+Game.ItemMixins.Missile = {
+    name: 'Bow',
+    init: function(template) {
+    }
+};

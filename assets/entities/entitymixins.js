@@ -38,7 +38,7 @@ Game.EntityMixins.Archer = {
         // If the target is destructible, calculate the damage
         // based on attack and defense value
         console.log(this.getWeapon().getRange());
-        
+        if (this.getWeapon().hasMixin('bow' && 'missile'))
         if (target.hasMixin('Destructible') && shotRange <= this.getWeapon().getRange()) {
             console.log(shotRange);
             
@@ -431,7 +431,10 @@ Game.EntityMixins.Equipper = {
         this._weapon = null;
         this._armor = null;
     },
-    wield: function (item) {
+    wieldFirst: function (item) {
+        this._weapon = item;
+    },
+    wieldSecond: function (item) {
         this._weapon = item;
     },
     unwield: function () {
