@@ -185,11 +185,13 @@ Game.Screen.playScreen = {
                 this.markForBuilding();
             } else if (inputData.keyCode === ROT.VK_1) {
                 // Setup the look screen.
-                var offsets = this.getScreenOffsets();
-                Game.Screen.targetScreen.setup(this._player,
-                    this._player.getX(), this._player.getY(), offsets.x, offsets.y);
-                this.setSubScreen(Game.Screen.targetScreen);
-                return;
+                if (this.checkProjectile()) {
+                    var offsets = this.getScreenOffsets();
+                    Game.Screen.targetScreen.setup(this._player,
+                        this._player.getX(), this._player.getY(), offsets.x, offsets.y);
+                    this.setSubScreen(Game.Screen.targetScreen);
+                } else return;
+
             } else if (inputData.keyCode === ROT.VK_I) {
                 // Show the inventory screen
                 scr = Game.Screen.inventoryScreen
@@ -216,6 +218,13 @@ Game.Screen.playScreen = {
                     this.showItemsSubScreen(Game.Screen.wieldScreen, this._player.getItems(),
                         'You have nothing to wield.');
                 }
+                return;
+            } else if (inputData.keyCode === ROT.VK_Q) {
+
+                    // Show the wield screen
+                    this.showItemsSubScreen(Game.Screen.wield2Screen, this._player.getItems(),
+                        'You have nothing to wield.');
+                
                 return;
             } else if (inputData.keyCode === ROT.VK_X) {
                 // Show the drop screen
@@ -268,6 +277,16 @@ Game.Screen.playScreen = {
             // Unlock the engine
             this._player.getMap().getEngine().unlock();
         }
+    },
+    checkProjectile: function () {
+        wielding = this._player.getWielding();
+        if (wielding[0] != null && wielding[1] != null) {
+            if ((wielding[0].hasMixin('Bow') ||  wielding[0].hasMixin('Missile')) &&
+                ((wielding[1].hasMixin('Bow') ||  wielding[1].hasMixin('Missile')))) {
+                console.log("bows and missiles ready!");
+                return true;
+            } else return false;
+        } else return false;
     },
     wait: function () {
         Game.Map.prototype.addAction(this._player.getMap(), 2);
@@ -405,7 +424,9 @@ Game.Screen.ItemListScreen.prototype.render = function (display) {
             if (this._items[i] === this._player.getArmor()) {
                 suffix = ' (wearing)';
             } else if (this._items[i] === wield[0]) {
-                suffix = ' (wielding)';
+                suffix = ' (1st hand)';
+            } else if (this._items[i] === wield[1]) {
+                suffix = ' (2nd hand)'
             }
             // Render at the correct row and add 2.
             display.drawText(0, 2 + row, letter + ' ' + selectionState + ' ' +
@@ -437,6 +458,7 @@ Game.Screen.ItemListScreen.prototype.handleInput = function (inputType, inputDat
                 (!this._canSelectItem || Object.keys(this._selectedIndices).length === 0))) {
             Game.Screen.playScreen.setSubScreen(undefined);
             // Handle pressing return when items are selected
+        
         } else if (inputData.keyCode === ROT.VK_RETURN) {
             this.executeOkFunction();
             // Handle pressing zero when 'no item' selection is enabled
@@ -521,7 +543,7 @@ Game.Screen.eatScreen = new Game.Screen.ItemListScreen({
 });
 
 Game.Screen.wieldScreen = new Game.Screen.ItemListScreen({
-    caption: 'Choose the item you wish to wield',
+    caption: 'Choose the item you wish to wield in first hand',
     canSelect: true,
     canSelectMultipleItems: false,
     hasNoItemOption: true,
@@ -532,14 +554,40 @@ Game.Screen.wieldScreen = new Game.Screen.ItemListScreen({
         // Check if we selected 'no item'
         var keys = Object.keys(selectedItems);
         if (keys.length === 0) {
-            this._player.unwield();
-            Game.sendMessage(this._player, "You are empty handed.")
+            item = this._player.getWielding()
+            this._player.unwieldFirst();
+            Game.sendMessage(this._player, "You remove %s from first hand.", [item[0].describeA()]);
         } else {
             // Make sure to unequip the item first in case it is the armor.
             var item = selectedItems[keys[0]];
             this._player.unequip(item);
             this._player.wieldFirst(item);
-            Game.sendMessage(this._player, "You are wielding %s.", [item.describeA()]);
+            Game.sendMessage(this._player, "You are wielding %s in first hand.", [item.describeA()]);
+        }
+        return true;
+    }
+});
+Game.Screen.wield2Screen = new Game.Screen.ItemListScreen({
+    caption: 'Choose the item you wish to wield in second hand',
+    canSelect: true,
+    canSelectMultipleItems: false,
+    hasNoItemOption: true,
+    isAcceptable: function (item) {
+        return item && item.hasMixin('Equippable') && item.isWieldable();
+    },
+    ok: function (selectedItems) {
+        // Check if we selected 'no item'
+        var keys = Object.keys(selectedItems);
+        if (keys.length === 0) {
+            item = this._player.getWielding()
+            this._player.unwieldSecond();
+            Game.sendMessage(this._player, "You remove %s from second hand.",[item[1].describeA()])
+        } else {
+            // Make sure to unequip the item first in case it is the armor.
+            var item = selectedItems[keys[0]];
+            this._player.unequip(item);
+            this._player.wieldSecond(item);
+            Game.sendMessage(this._player, "You are wielding %s in second hand.", [item.describeA()]);
         }
         return true;
     }

@@ -84,7 +84,7 @@ Game.ItemMixins.Bow = {
     }
 };
 Game.ItemMixins.Missile = {
-    name: 'Bow',
+    name: 'Missile',
     init: function(template) {
     }
 };

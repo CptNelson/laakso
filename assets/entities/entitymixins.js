@@ -162,7 +162,7 @@ Game.EntityMixins.Destructible = {
         if (this.hasMixin(Game.EntityMixins.Equipper)) {
             for (wields = 0; wields < this.wielding.length; wields++) {
                 if (this.wielding[wields]) {
-                    modifier += this.wielding[wields].getDefenceValue();
+                    modifier += this.wielding[wields].getDefenseValue();
                 }
                 if (this.getArmor()) {
                     modifier += this.getArmor().getDefenseValue();
@@ -467,7 +467,7 @@ Game.EntityMixins.Equipper = {
         this._wield2 = item;
     },
     unwieldFirst: function () {
-        this._wield = null;
+        this._wield1 = null;
     },
     unwieldSecond: function () {
         this._wield2 = null;
