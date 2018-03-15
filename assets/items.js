@@ -119,12 +119,13 @@ Game.ItemRepository.define('shortbow', {
 }, {
     disableRandomCreation: false
 });
-Game.ItemRepository.define('arrow', {
-    name: 'arrow',
+Game.ItemRepository.define('quiver of arrows', {
+    name: 'quiver of arrows',
     character: '/',
     foreground: 'brown',
     attackValue: 0,
     wieldable: true,
+    amount: 20,
     mixins: [Game.ItemMixins.Equippable, Game.ItemMixins.Missile]
 }, {
     disableRandomCreation: false

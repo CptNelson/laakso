@@ -12,20 +12,45 @@ Game.EntityMixins.Archer = {
     groupName: 'Attacker',
     init: function (template) {
         this._archeryValue = template['archeryValue'] || 0;
+        this.wielding = null;
     },
-    getArcheryValue: function () {       
+    getArcheryValue: function () {
+        this.wielding = this.getWielding();
         var modifier = 0;
         // check for equipment
         if (this.hasMixin(Game.EntityMixins.Equipper)) {
-            if (this.getWeapon()) {  
-                modifier += this.getWeapon().getArcheryValue();
-            }
-            if (this.getArmor()) {
-                modifier += this.getArmor().getArcheryValue();
+            for (wields = 0; wields < this.wielding.length; wields++) {
+                if (this.wielding[wields]) {
+                    modifier += this.wielding[wields].getArcheryValue();
+                }
+                if (this.getArmor()) {
+                    modifier += this.getArmor().getArcheryValue();
+                }
             }
         }
-        
+
         return this._archeryValue + modifier
+    },
+    getRangeValue: function () {
+
+        this.wielding = this.getWielding();
+        var modifier = 0;
+        // check for equipment
+        if (this.hasMixin(Game.EntityMixins.Equipper)) {
+
+
+            for (wields = 0; wields < this.wielding.length; wields++) {
+                console.log(this.wielding.length);
+                if (this.wielding[wields]) {
+                    modifier += this.wielding[wields].getRange();
+                }
+                if (this.getArmor()) {
+                    modifier += this.getArmor().getRange();
+                }
+            }
+        }
+
+        return modifier
     },
     increaseArcheryValue: function (value) {
         // If no value was passed, default to 2.
@@ -37,17 +62,17 @@ Game.EntityMixins.Archer = {
     shoot: function (target, shotRange) {
         // If the target is destructible, calculate the damage
         // based on attack and defense value
-        console.log(this.getWeapon().getRange());
-        if (this.getWeapon().hasMixin('bow' && 'missile'))
-        if (target.hasMixin('Destructible') && shotRange <= this.getWeapon().getRange()) {
-            console.log(shotRange);
-            
+        // console.log(this.getWeapon().getRange());
+
+
+        if (target.hasMixin('Destructible') && shotRange <= this.getRangeValue()) {
+
             var archery = this.getArcheryValue();
-            
+
             var defense = target.getDefenseValue();
             var max = Math.max(0, archery - defense);
             console.log(archery);
-            
+
             var damage = 1 + Math.floor(Math.random() * max);
 
             Game.sendMessage(this, 'You shoot %s for %d damage!',
@@ -133,12 +158,15 @@ Game.EntityMixins.Destructible = {
         var modifier = 0;
         // If we can equip items, then have to take into 
         // consideration weapon and armor
+
         if (this.hasMixin(Game.EntityMixins.Equipper)) {
-            if (this.getWeapon()) {
-                modifier += this.getWeapon().getDefenseValue();
-            }
-            if (this.getArmor()) {
-                modifier += this.getArmor().getDefenseValue();
+            for (wields = 0; wields < this.wielding.length; wields++) {
+                if (this.wielding[wields]) {
+                    modifier += this.wielding[wields].getDefenceValue();
+                }
+                if (this.getArmor()) {
+                    modifier += this.getArmor().getDefenseValue();
+                }
             }
         }
         return this._defenseValue + modifier;
@@ -428,17 +456,21 @@ Game.EntityMixins.CorpseDropper = {
 Game.EntityMixins.Equipper = {
     name: 'Equipper',
     init: function (template) {
-        this._weapon = null;
+        this._wield1 = null;
+        this._wield2 = null;
         this._armor = null;
     },
-    wield: function (item) {
-        this._weapon = item;
+    wieldFirst: function (item) {
+        this._wield1 = item;
     },
     wieldSecond: function (item) {
-        this._weapon = item;
+        this._wield2 = item;
     },
-    unwield: function () {
-        this._weapon = null;
+    unwieldFirst: function () {
+        this._wield = null;
+    },
+    unwieldSecond: function () {
+        this._wield2 = null;
     },
     wear: function (item) {
         this._armor = item;
@@ -446,8 +478,8 @@ Game.EntityMixins.Equipper = {
     takeOff: function () {
         this._armor = null;
     },
-    getWeapon: function () {
-        return this._weapon;
+    getWielding: function () {
+        return [this._wield1, this._wield2]
     },
     getArmor: function () {
         return this._armor;

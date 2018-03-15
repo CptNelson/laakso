@@ -391,6 +391,7 @@ Game.Screen.ItemListScreen.prototype.render = function (display) {
     }
     var row = 0;
     for (var i = 0; i < this._items.length; i++) {
+        wield = this._player.getWielding();
         // If we have an item, we want to render it.
         if (this._items[i]) {
             // Get the letter matching the item's index
@@ -403,7 +404,7 @@ Game.Screen.ItemListScreen.prototype.render = function (display) {
             var suffix = '';
             if (this._items[i] === this._player.getArmor()) {
                 suffix = ' (wearing)';
-            } else if (this._items[i] === this._player.getWeapon()) {
+            } else if (this._items[i] === wield[0]) {
                 suffix = ' (wielding)';
             }
             // Render at the correct row and add 2.
@@ -537,7 +538,7 @@ Game.Screen.wieldScreen = new Game.Screen.ItemListScreen({
             // Make sure to unequip the item first in case it is the armor.
             var item = selectedItems[keys[0]];
             this._player.unequip(item);
-            this._player.wield(item);
+            this._player.wieldFirst(item);
             Game.sendMessage(this._player, "You are wielding %s.", [item.describeA()]);
         }
         return true;
