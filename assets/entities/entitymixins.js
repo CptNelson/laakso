@@ -90,6 +90,7 @@ Game.EntityMixins.Archer = {
         for (i = 0; i < this.wielding.length; i++){
             if (this.wielding[i].hasMixin('Missile')) {
                 this.wielding[i].removeMissile(this);
+                this.getMap().addItem (target.getX(), target.getY(), 0, Game.ItemRepository.create('quiver of arrows'))
             }
         }   
         

@@ -54,7 +54,7 @@ Game.EntityMixins.MaahinenAI = {
                if (entity && entity !== source) {
                    return false;
                }
-               console.log("asdasf");
+    
                return source.getMap().getTile(x, y, z).isWalkable();
            }, { topology: 8 });
            // Once we've gotten the path, we want to move to the second cell that is

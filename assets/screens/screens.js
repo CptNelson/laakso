@@ -843,28 +843,40 @@ Game.Screen.lookScreen = new Game.Screen.TargetBasedScreen({
 });
 
 Game.Screen.TargetBasedScreen.prototype.missile = function (shotRange) {
+    //Get line to the target
+    var points = Game.Geometry.getLine(this._startX, this._startY, this._cursorX,
+        this._cursorY);
+
+    var entity = null;
     var z = this._player.getZ();
     var map = this._player.getMap();
 
-    var points = Game.Geometry.getLine(this._startX, this._startY, this._cursorX,
-        this._cursorY);
-    var entity = null;
-
+    
+    // check for collisions between missile and target
     for (var i = 1, l = points.length; i < l; i++) {
         var x = points[i].x + this._offsetX;
         var y = points[i].y + this._offsetY
-        if (map.getEntityAt(x,y, z)) {
-            entity = map.getEntityAt(x,y, z);
+        // if there's blocking tile, 1/10 change to go past it
+        if (map.getTile(x, y, z).isBlockingLight()) {
+            console.log("tree");
+            var rnd = Math.floor(Math.random() * 10)
+            if (rnd != 1) {
+                this._player.getMap().getEngine().unlock();
+                Game.Screen.playScreen.setSubScreen(undefined);
+                return;
+            }
+        }
+        if (map.getEntityAt(x, y, z)) {
+            entity = map.getEntityAt(x, y, z);
             break;
         }
     }
+    // if no entity, misfire
     if (entity == null) {
+        this._player.getMap().getEngine().unlock();
+        Game.Screen.playScreen.setSubScreen(undefined);
         return;
-    }
-
-
-    //var entity = map.getEntityAt(this._cursorX + this._offsetX, this._cursorY + this._offsetY, z);
-
+    } 
     // Switch back to the play screen and shoot the enemy.
     this._player.getMap().getEngine().unlock();
     Game.Screen.playScreen.setSubScreen(undefined);
