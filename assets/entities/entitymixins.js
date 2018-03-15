@@ -431,7 +431,7 @@ Game.EntityMixins.Equipper = {
         this._weapon = null;
         this._armor = null;
     },
-    wieldFirst: function (item) {
+    wield: function (item) {
         this._weapon = item;
     },
     wieldSecond: function (item) {
