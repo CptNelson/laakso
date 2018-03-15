@@ -3,14 +3,14 @@ Game.ItemMixins = {};
 // Edible mixins
 Game.ItemMixins.Edible = {
     name: 'Edible',
-    init: function(template) {
+    init: function (template) {
         // Number of points to add to hunger
         this._foodValue = template['foodValue'] || 5;
         // Number of times the item can be consumed
         this._maxConsumptions = template['consumptions'] || 1;
         this._remainingConsumptions = this._maxConsumptions;
     },
-    eat: function(entity) {
+    eat: function (entity) {
         if (entity.hasMixin('FoodConsumer')) {
             if (this.hasRemainingConsumptions()) {
                 entity.modifyFullnessBy(this._foodValue);
@@ -18,10 +18,10 @@ Game.ItemMixins.Edible = {
             }
         }
     },
-    hasRemainingConsumptions: function() {
+    hasRemainingConsumptions: function () {
         return this._remainingConsumptions > 0;
     },
-    describe: function() {
+    describe: function () {
         if (this._maxConsumptions != this._remainingConsumptions) {
             return 'partly eaten ' + Game.Item.prototype.describe.call(this);
         } else {
@@ -29,8 +29,8 @@ Game.ItemMixins.Edible = {
         }
     },
     listeners: {
-        'details': function() {
-            return [{key: 'food', value: this._foodValue}];
+        'details': function () {
+            return [{ key: 'food', value: this._foodValue }];
         }
     }
 };
@@ -38,40 +38,44 @@ Game.ItemMixins.Edible = {
 // Equipment mixins
 Game.ItemMixins.Equippable = {
     name: 'Equippable',
-    init: function(template) {
+    init: function (template) {
         this._attackValue = template['attackValue'] || 0;
         this._archeryValue = template['archeryValue'] || 0;
         this._range = template['range'] || 3;
         this._defenseValue = template['defenseValue'] || 0;
         this._wieldable = template['wieldable'] || false;
         this._wearable = template['wearable'] || false;
+        this._amount = template['amount'] || 1;
     },
-    getAttackValue: function() {
+    getAttackValue: function () {
         return this._attackValue;
     },
-    getArcheryValue: function() {
+    getArcheryValue: function () {
         return this._archeryValue;
     },
-    getRange: function() {
+    getRange: function () {
         return this._range;
     },
-    getDefenseValue: function() {
+    getDefenseValue: function () {
         return this._defenseValue;
     },
-    isWieldable: function() {
+    isWieldable: function () {
         return this._wieldable;
     },
-    isWearable: function() {
+    isWearable: function () {
         return this._wearable;
     },
+    getAmount: function () {
+        return this._amount;
+    },
     listeners: {
-        'details': function() {
+        'details': function () {
             var results = [];
             if (this._wieldable) {
-                results.push({key: 'attack', value: this.getAttackValue()});
+                results.push({ key: 'attack', value: this.getAttackValue() });
             }
             if (this._wearable) {
-                results.push({key: 'defense', value: this.getDefenseValue()});
+                results.push({ key: 'defense', value: this.getDefenseValue() });
             }
             return results;
         }
@@ -80,11 +84,32 @@ Game.ItemMixins.Equippable = {
 
 Game.ItemMixins.Bow = {
     name: 'Bow',
-    init: function(template) {
+    init: function (template) {
     }
 };
 Game.ItemMixins.Missile = {
     name: 'Missile',
-    init: function(template) {
+    init: function (template) {
+
+    },
+    removeMissile: function (entity) {
+        this._amount -= 5;
+        console.log(this._amount);
+        wielding = entity.getWielding();
+
+        if (this._amount <= 0) {
+            console.log(wielding)
+            for (j = 0; j < wielding.length; j++) {
+                if (j == 0 && wielding[j].hasMixin('Missile')) {
+                    entity.unwieldFirst();
+                    return;
+                } else if (j == 1 && wielding[j].hasMixin('Missile')) {
+                    entity.unwieldSecond();
+                    return;
+                }
+
+            }
+        }
+        
     }
 };

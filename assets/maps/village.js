@@ -93,6 +93,7 @@ Game.Map.Village = function (tiles, player) {
     this.addEntityAtRandomPosition(player, 0);
     player.addItem(Game.ItemRepository.create('shortbow'))
     player.addItem(Game.ItemRepository.create('quiver of arrows'))
+    
     for (items = 0; items < 6; items++) {       
         
     }

@@ -428,9 +428,12 @@ Game.Screen.ItemListScreen.prototype.render = function (display) {
             } else if (this._items[i] === wield[1]) {
                 suffix = ' (2nd hand)'
             }
+            
+            
+            
             // Render at the correct row and add 2.
             display.drawText(0, 2 + row, letter + ' ' + selectionState + ' ' +
-                this._items[i].describe() + suffix);
+                this._items[i].describe() + ' (' + this._items[i].getAmount() + ') ' + suffix);
             row++;
         }
     }

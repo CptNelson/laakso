@@ -87,6 +87,13 @@ Game.EntityMixins.Archer = {
         } else {
             Game.sendMessage(this, '%s is too far!', [target.getName()])
         }
+        for (i = 0; i < this.wielding.length; i++){
+            if (this.wielding[i].hasMixin('Missile')) {
+                this.wielding[i].removeMissile(this);
+            }
+        }   
+        
+       
     },
     listeners: {
         details: function () {
