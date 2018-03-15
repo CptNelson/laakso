@@ -4,12 +4,12 @@ Game.PlayerTemplate = {
     character: '@',
     foreground: 'white',
     maxHp: 40,
-    attackValue: 7,
-    archeryValue: 4,
+    attackValue: 35,
+    archeryValue: 30,
     sightRadius: 16,
     inventorySlots: 6,
     mixins: [Game.EntityMixins.PlayerAI, Game.EntityMixins.Archer,
-             Game.EntityMixins.Attacker, Game.EntityMixins.Destructible,
+             Game.EntityMixins.MeleeAttacker, Game.EntityMixins.Destructible,
              Game.EntityMixins.InventoryHolder, Game.EntityMixins.FoodConsumer,
              Game.EntityMixins.Sight, Game.EntityMixins.MessageRecipient,
              Game.EntityMixins.Equipper, Game.EntityMixins.Human,
@@ -26,12 +26,12 @@ Game.EntityRepository.define('villager', {
     character: 'H',
     foreground: 'white',
     maxHp: 10,
-    attackValue: 4,
+    attackValue: 10,
     //speed: 1000,
     mixins: [Game.EntityMixins.VillagerAI, Game.EntityMixins.Carpenter,
-             Game.EntityMixins.Attacker, Game.EntityMixins.Destructible,
-             Game.EntityMixins.CorpseDropper, Game.EntityMixins.Sight,
-             Game.EntityMixins.Human,
+             Game.EntityMixins.MeleeAttacker, Game.EntityMixins.Destructible,
+             Game.EntityMixins.CorpseDropper, Game.EntityMixins.Sight, 
+             Game.EntityMixins.Human, Game.EntityMixins.Archer, Game.EntityMixins.Equipper,
              Game.EntityMixins.ExperienceGainer, Game.EntityMixins.RandomStatGainer]
 });
 
@@ -45,7 +45,7 @@ Game.EntityRepository.define('maahinen', {
     //speed: 1000,
     mixins: [Game.EntityMixins.MaahinenAI, Game.EntityMixins.Destructible,
              Game.EntityMixins.ExperienceGainer, Game.EntityMixins.RandomStatGainer,
-             Game.EntityMixins.Attacker, Game.EntityMixins.Sight]
+             Game.EntityMixins.MeleeAttacker, Game.EntityMixins.Sight]
 });
 
 Game.EntityRepository.define('construct', {

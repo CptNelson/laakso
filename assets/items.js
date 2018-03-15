@@ -53,15 +53,7 @@ Game.ItemRepository.define('wood', {
 });
 
 // ======WEAPONS=========
-Game.ItemRepository.define('shortbow', {
-    name: 'shortbow',
-    character: ')',
-    foreground: 'brown',
-    archeryValue: 3,
-    range: 8,
-    wieldable: true,
-    mixins: [Game.ItemMixins.Equippable]
-});
+
 
 Game.ItemRepository.define('dagger', {
     name: 'dagger',
@@ -88,8 +80,9 @@ Game.ItemRepository.define('sword', {
     name: 'sword',
     character: ')',
     foreground: 'white',
-    attackValue: Math.floor(Math.random() * 3) + 7,
-    defenceValue: 2,
+    attackValue: Math.floor(Math.random() * 3),
+    defenceValue: Math.floor(Math.random() * 3) + 1,
+    damageValue: Math.floor(Math.random() * 3) + 7,
     wieldable: true,
     mixins: [Game.ItemMixins.Equippable]
 }, {
@@ -112,18 +105,21 @@ Game.ItemRepository.define('shortbow', {
     name: 'shortbow',
     character: ')',
     foreground: 'brown',
-    attackValue: 5,
+    archeryValue: 5,
+    missileDamageValue: Math.floor(Math.random() * 2) + 2,
     range: 10,
     wieldable: true,
     mixins: [Game.ItemMixins.Equippable, Game.ItemMixins.Bow]
 }, {
     disableRandomCreation: false
 });
+
 Game.ItemRepository.define('quiver of arrows', {
     name: 'quiver of arrows',
     character: '/',
     foreground: 'brown',
     attackValue: 0,
+    missileDamageValue: Math.floor(Math.random() * 2),
     wieldable: true,
     amount: 20,
     mixins: [Game.ItemMixins.Equippable, Game.ItemMixins.Missile]
