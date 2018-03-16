@@ -16,7 +16,7 @@ Game.EntityMixins.Archer = {
         this.wielding = null;
     },
     getArcheryValue: function () {
-     
+      
         var modifier = 0;
         // check for equipment
         if (this.hasMixin(Game.EntityMixins.Equipper)) {
@@ -113,6 +113,8 @@ Game.EntityMixins.Archer = {
         } else {
             Game.sendMessage(this, '%s is too far!', [target.getName()])
         }
+        console.log(this.wielding);
+        
         for (i = 0; i < this.wielding.length; i++) {
             if (this.wielding[i].hasMixin('Missile')) {
                 this.wielding[i].removeMissile(this);
@@ -180,9 +182,13 @@ Game.EntityMixins.MeleeAttacker = {
         this._meleeSkill += 2;
         Game.sendMessage(this, "You look stronger!");
     },
-    attack: function (target) {
-        // If the target is destructible, calculate the damage
-        // based on attack and defense value
+    meleeAttack: function (x,y) {
+
+        var direction;
+        direction.x = x + this.getX();
+        direction.y = y + this.gety();
+        console.log(this.getMap().getEntityAt(direction.x, direction.y, 0));
+        
         if (target.hasMixin('Destructible')) {
             var attack = this.getMeleeSkill();
             var defense = target.getDefenseValue();
@@ -535,16 +541,16 @@ Game.EntityMixins.Equipper = {
         this._wield2 = null;
         this._armor = null;
     },
-    wieldFirst: function (item) {
+    wieldPrimary: function (item) {
         this._wield1 = item;
     },
-    wieldSecond: function (item) {
+    wieldSecondary: function (item) {
         this._wield2 = item;
     },
-    unwieldFirst: function () {
+    unwieldPrimary: function () {
         this._wield1 = null;
     },
-    unwieldSecond: function () {
+    unwieldSecondary: function () {
         this._wield2 = null;
     },
     wear: function (item) {

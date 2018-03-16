@@ -285,8 +285,14 @@ Game.Screen.playScreen = {
         } else if (this.checkHand(h) == 'melee'){
             console.log("melee");
             
+            Game.Screen.meleeDirectionScreen.setup(this._player);
+            this.setSubScreen(Game.Screen.meleeDirectionScreen);
+            
         } else if (this.checkHand(h) == 'fist') {
+                
+                Game.Screen.meleeDirectionScreen.setup(this._player);
                 console.log('fist')
+                this.setSubScreen(Game.Screen.meleeDirectionScreen);
         } else console.log('false');
         
     },
@@ -578,13 +584,13 @@ Game.Screen.wieldPrimaryScreen = new Game.Screen.ItemListScreen({
         var keys = Object.keys(selectedItems);
         if (keys.length === 0) {
             item = this._player.getWielding()
-            this._player.unwieldFirst();
+            this._player.unwieldPrimary();
             Game.sendMessage(this._player, "You remove %s from first hand.", [item[0].describeA()]);
         } else {
             // Make sure to unequip the item first in case it is the armor.
             var item = selectedItems[keys[0]];
             this._player.unequip(item);
-            this._player.wieldFirst(item);
+            this._player.wieldPrimary(item);
             Game.sendMessage(this._player, "You are wielding %s in first hand.", [item.describeA()]);
         }
         return true;
@@ -603,13 +609,13 @@ Game.Screen.wieldSecondaryScreen = new Game.Screen.ItemListScreen({
         var keys = Object.keys(selectedItems);
         if (keys.length === 0) {
             item = this._player.getWielding()
-            this._player.unwieldSecond();
+            this._player.unwieldSecondary();
             Game.sendMessage(this._player, "You remove %s from second hand.", [item[1].describeA()])
         } else {
             // Make sure to unequip the item first in case it is the armor.
             var item = selectedItems[keys[0]];
             this._player.unequip(item);
-            this._player.wieldSecond(item);
+            this._player.wieldSecondary(item);
             Game.sendMessage(this._player, "You are wielding %s in second hand.", [item.describeA()]);
         }
         return true;
@@ -707,6 +713,116 @@ Game.Screen.gainStatScreen = {
 };
 
 
+
+Game.Screen.DirectionBasedScreen = function (template) {
+    template = template || {};
+    // By default, our ok return does nothing and does not consume a turn.
+    this._isAcceptableFunction = template['okFunction'] || function (x, y) {
+        return false;
+    };
+    // The defaut caption function simply returns an empty string.
+    this._captionFunction = template['captionFunction'] || function (x, y) {
+        return '';
+    }
+};
+
+Game.Screen.DirectionBasedScreen.prototype.setup = function (player) {
+    this._player = player;
+    var visibleCells = {};
+    this._player.getMap().getFov(this._player.getZ()).compute(
+        this._player.getX(), this._player.getY(),
+        this._player.getSightRadius(),
+        function (x, y, radius, visibility) {
+            visibleCells[x + "," + y] = true;
+        });
+    this._visibleCells = visibleCells;
+};
+
+Game.Screen.DirectionBasedScreen.prototype.render = function (display) {
+    Game.Screen.playScreen.renderTiles.call(Game.Screen.playScreen, display);
+
+
+    var messages = this._player.getMessages();
+    var messageY = 22;
+    for (var i = 0; i < messages.length; i++) {
+        // Draw each message, adding the number of lines
+        messageY += display.drawText(
+            0,
+            messageY,
+            '%c{white}%b{black}' + messages[i]
+        );
+    }
+
+    var stats = '%c{greenyellow}%b{black}';
+    stats += vsprintf('HP: %d/%d L: %d XP: %d',
+        [this._player.getHp(), this._player.getMaxHp(),
+        this._player.getLevel(), this._player.getExperience()]);
+    display.drawText(0, Game.getScreenHeight() + 1, stats);
+    // Render hunger state
+    var hungerState = '%c{greenyellow}%b{black}';
+    hungerState += vsprintf('%s', [this._player.getHungerState()]);
+    display.drawText(Game.getScreenWidth() - hungerState.length / 2, Game.getScreenHeight() + 1, hungerState);
+
+};
+
+Game.Screen.DirectionBasedScreen.prototype.handleInput = function (inputType, inputData) {
+    // Move the cursor
+    if (inputType == 'keydown') {
+        if (inputData.keyCode === ROT.VK_LEFT) {
+            this.direction(-1, 0);
+        } else if (inputData.keyCode === ROT.VK_RIGHT) {
+            this.direction(1, 0);
+        } else if (inputData.keyCode === ROT.VK_UP) {
+            this.direction(0, -1);
+        } else if (inputData.keyCode === ROT.VK_DOWN) {
+            this.direction(0, 1);
+        } else if (inputData.keyCode === ROT.VK_ESCAPE) {
+            Game.Screen.playScreen.setSubScreen(undefined);
+        } else return;
+        this.executeOkFunction();
+    //Game.refresh();
+    }
+};
+
+
+Game.Screen.DirectionBasedScreen.prototype.executeOkFunction = function () {
+    // Switch back to the play screen.
+    Game.Screen.playScreen.setSubScreen(undefined);
+    // Call the OK function and end the player's turn if it return true.
+ 
+        this._player.getMap().getEngine().unlock();
+    
+};
+Game.Screen.directionScreen = new Game.Screen.DirectionBasedScreen({
+
+});
+
+Game.Screen.meleeDirectionScreen = new Game.Screen.DirectionBasedScreen({
+    direction: function() {
+        this._player.meleeAttack(x,y);
+        console.log(y, " attack ", x);
+    }
+});
+
+Game.Screen.DirectionBasedScreen.prototype.direction = function (x,y) {
+    console.log(y, " dir ", x);
+    
+/*     this._player.getMap().getEngine().unlock();
+    Game.Screen.playScreen.setSubScreen(undefined);
+    this._player.shoot(entity, shotRange); */
+
+
+};
+
+
+
+
+
+
+
+
+
+
 Game.Screen.TargetBasedScreen = function (template) {
     template = template || {};
     // By default, our ok return does nothing and does not consume a turn.
@@ -798,7 +914,6 @@ Game.Screen.TargetBasedScreen.prototype.handleInput = function (inputType, input
             var points = Game.Geometry.getLine(this._startX, this._startY, this._cursorX,
                 this._cursorY);
             _lineLength = points.length;
-            console.log(points.length, " ", this._lineLength);
             this.missile(points.length);
         }
     }
