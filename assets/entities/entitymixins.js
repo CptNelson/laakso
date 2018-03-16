@@ -184,14 +184,10 @@ Game.EntityMixins.MeleeAttacker = {
     },
     meleeAttack: function (x,y) {
 
-        var direction = {x: null, y: null}
-        direction.x = x + this.getX();
-        direction.y = y + this.getY();
+        var direction = {x: x + this.getX(), y: y + this.getY()}
         var target = this.getMap().getEntityAt(direction.x, direction.y, 0);
-        console.log(target);
-        
         if (target == null) { 
-            console.log("miss");
+            Game.sendMessage(this, 'You swing in the thin air!')
             
             return;
         }
