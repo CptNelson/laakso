@@ -184,15 +184,21 @@ Game.EntityMixins.MeleeAttacker = {
     },
     meleeAttack: function (x,y) {
 
-        var direction;
+        var direction = {x: null, y: null}
         direction.x = x + this.getX();
-        direction.y = y + this.gety();
-        console.log(this.getMap().getEntityAt(direction.x, direction.y, 0));
+        direction.y = y + this.getY();
+        var target = this.getMap().getEntityAt(direction.x, direction.y, 0);
+        console.log(target);
+        
+        if (target == null) { 
+            console.log("miss");
+            
+            return;
+        }
         
         if (target.hasMixin('Destructible')) {
             var attack = this.getMeleeSkill();
             var defense = target.getDefenseValue();
-
             if ((attack + Math.floor(Math.random() * 100)) <
                 (defense + Math.floor(Math.random() * 100))) {
                 Game.sendMessage(this, 'You miss %s!',
@@ -211,7 +217,8 @@ Game.EntityMixins.MeleeAttacker = {
 /*             Game.sendMessageNearby(this.getMap(), entity.getX(), entity.getY(),
                 '%s strikes %s for %d damage!'); */
          
-                
+            console.log(damage);
+               
             target.takeDamage(this, damage);
         }
     },

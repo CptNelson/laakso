@@ -186,9 +186,11 @@ Game.Screen.playScreen = {
             } else if (inputData.keyCode === ROT.VK_1) {
                 // Setup the look screen.   
                 this.useHands(0);
+                return;
             } else if (inputData.keyCode === ROT.VK_2) {
                 // Setup the look screen.   
                 this.useHands(1);
+                return;
             } else if (inputData.keyCode === ROT.VK_I) {
                 // Show the inventory screen
                 scr = Game.Screen.inventoryScreen
@@ -291,8 +293,8 @@ Game.Screen.playScreen = {
         } else if (this.checkHand(h) == 'fist') {
                 
                 Game.Screen.meleeDirectionScreen.setup(this._player);
-                console.log('fist')
                 this.setSubScreen(Game.Screen.meleeDirectionScreen);
+
         } else console.log('false');
         
     },
@@ -716,6 +718,7 @@ Game.Screen.gainStatScreen = {
 
 Game.Screen.DirectionBasedScreen = function (template) {
     template = template || {};
+    
     // By default, our ok return does nothing and does not consume a turn.
     this._isAcceptableFunction = template['okFunction'] || function (x, y) {
         return false;
@@ -724,11 +727,14 @@ Game.Screen.DirectionBasedScreen = function (template) {
     this._captionFunction = template['captionFunction'] || function (x, y) {
         return '';
     }
+    
 };
 
 Game.Screen.DirectionBasedScreen.prototype.setup = function (player) {
     this._player = player;
     var visibleCells = {};
+    this._attacking = false;
+    
     this._player.getMap().getFov(this._player.getZ()).compute(
         this._player.getX(), this._player.getY(),
         this._player.getSightRadius(),
@@ -766,20 +772,28 @@ Game.Screen.DirectionBasedScreen.prototype.render = function (display) {
 };
 
 Game.Screen.DirectionBasedScreen.prototype.handleInput = function (inputType, inputData) {
-    // Move the cursor
+    // direction the cursor
     if (inputType == 'keydown') {
-        if (inputData.keyCode === ROT.VK_LEFT) {
+        if (inputData.keyCode === ROT.VK_LEFT || inputData.keyCode === 100) {
             this.direction(-1, 0);
-        } else if (inputData.keyCode === ROT.VK_RIGHT) {
+        } else if (inputData.keyCode === ROT.VK_RIGHT || inputData.keyCode === 102) {
             this.direction(1, 0);
-        } else if (inputData.keyCode === ROT.VK_UP) {
+        } else if (inputData.keyCode === ROT.VK_UP || inputData.keyCode === 104) {
             this.direction(0, -1);
-        } else if (inputData.keyCode === ROT.VK_DOWN) {
+        } else if (inputData.keyCode === ROT.VK_DOWN || inputData.keyCode === 98) {
             this.direction(0, 1);
+        } else if (inputData.keyCode === 97) {
+            this.direction(-1, 1);
+        } else if (inputData.keyCode === 99) {
+            this.direction(1, 1);
+        } else if (inputData.keyCode === 103) {
+            this.direction(-1, -1);
+        } else if (inputData.keyCode === 105) {
+            this.direction(1, -1);
         } else if (inputData.keyCode === ROT.VK_ESCAPE) {
             Game.Screen.playScreen.setSubScreen(undefined);
-        } else return;
-        this.executeOkFunction();
+        } else {return;}
+    this.executeOkFunction();
     //Game.refresh();
     }
 };
@@ -798,18 +812,21 @@ Game.Screen.directionScreen = new Game.Screen.DirectionBasedScreen({
 });
 
 Game.Screen.meleeDirectionScreen = new Game.Screen.DirectionBasedScreen({
-    direction: function() {
-        this._player.meleeAttack(x,y);
-        console.log(y, " attack ", x);
-    }
+ enter: function () {     
+     this._attacking = true;
+ }
 });
 
+
 Game.Screen.DirectionBasedScreen.prototype.direction = function (x,y) {
-    console.log(y, " dir ", x);
+    if (!this._attacking) {
+      //  this._player.getMap().getEngine().unlock();
+       // Game.Screen.playScreen.setSubScreen(undefined);
+        this._player.meleeAttack(x,y);
+}
+
     
-/*     this._player.getMap().getEngine().unlock();
-    Game.Screen.playScreen.setSubScreen(undefined);
-    this._player.shoot(entity, shotRange); */
+
 
 
 };
@@ -896,14 +913,22 @@ Game.Screen.TargetBasedScreen.prototype.render = function (display) {
 Game.Screen.TargetBasedScreen.prototype.handleInput = function (inputType, inputData) {
     // Move the cursor
     if (inputType == 'keydown') {
-        if (inputData.keyCode === ROT.VK_LEFT) {
+        if (inputData.keyCode === ROT.VK_LEFT || inputData.keyCode === 100) {
             this.moveCursor(-1, 0);
-        } else if (inputData.keyCode === ROT.VK_RIGHT) {
+        } else if (inputData.keyCode === ROT.VK_RIGHT || inputData.keyCode === 102) {
             this.moveCursor(1, 0);
-        } else if (inputData.keyCode === ROT.VK_UP) {
+        } else if (inputData.keyCode === ROT.VK_UP || inputData.keyCode === 104) {
             this.moveCursor(0, -1);
-        } else if (inputData.keyCode === ROT.VK_DOWN) {
+        } else if (inputData.keyCode === ROT.VK_DOWN || inputData.keyCode === 98) {
             this.moveCursor(0, 1);
+        } else if (inputData.keyCode === 97) {
+            this.moveCursor(-1, 1);
+        } else if (inputData.keyCode === 99) {
+            this.moveCursor(1, 1);
+        } else if (inputData.keyCode === 103) {
+            this.moveCursor(-1, -1);
+        } else if (inputData.keyCode === 105) {
+            this.moveCursor(1, -1);
         } else if (inputData.keyCode === ROT.VK_ESCAPE) {
             Game.Screen.playScreen.setSubScreen(undefined);
         } else if (inputData.keyCode === ROT.VK_RETURN) {
