@@ -183,8 +183,14 @@ Game.EntityMixins.MeleeAttacker = {
         Game.sendMessage(this, "You look stronger!");
     },
     meleeAttack: function (x,y) {
+        var direction;
+        if (this.hasMixin('PlayerActor')) {
+            direction = {x: x + this.getX(), y: y + this.getY()}
 
-        var direction = {x: x + this.getX(), y: y + this.getY()}
+        } else {
+            direction = {x: x, y: y}
+           
+        }
         var target = this.getMap().getEntityAt(direction.x, direction.y, 0);
         if (target == null) { 
             Game.sendMessage(this, 'You swing in the thin air!')

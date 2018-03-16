@@ -99,7 +99,8 @@ Game.EntityMixins.MaahinenAI = {
         var offsets = Math.abs(target.getX() - this.getX()) +
             Math.abs(target.getY() - this.getY());
         if (offsets === 1) {
-                //this.attack(target);
+            
+                this.meleeAttack(target.getX(), target.getY());
                 return;
         }
 
