@@ -55,8 +55,6 @@ Game.Map.Village = function (tiles, player) {
                 if (this._tiles[0][y][x] == Game.Tile.treeTile) {
                     i = Math.floor(Math.random() * (4))
                     if (i == 1) {
-                        console.log("asd");
-
                         var xOffset = Math.floor(Math.random() * 3) - 1;
                         var yOffset = Math.floor(Math.random() * 3) - 1;
                         if (xOffset != 0 || yOffset != 0) {

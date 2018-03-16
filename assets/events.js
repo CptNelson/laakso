@@ -3,7 +3,6 @@ Game.Events = function() {
 },
 
 Game.Events.prototype.turnDone = function(events, turn, map) {
-    console.log("event turn done")
     if (turn == 50 || turn == 75) {
         console.log("it's turn five.")
         events.releaseMaahiset(map);

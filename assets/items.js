@@ -84,7 +84,7 @@ Game.ItemRepository.define('sword', {
     defenceValue: Math.floor(Math.random() * 3) + 1,
     damageValue: Math.floor(Math.random() * 3) + 7,
     wieldable: true,
-    mixins: [Game.ItemMixins.Equippable]
+    mixins: [Game.ItemMixins.Equippable,Game.ItemMixins.Melee]
 }, {
     disableRandomCreation: true
 });

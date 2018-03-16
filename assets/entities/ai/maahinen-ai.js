@@ -28,12 +28,11 @@ Game.EntityMixins.MaahinenAI = {
         }
     },
     goToCenter: function () {
-        console.log("going");
-        
+
         map = this.getMap();
         centerY = map.getWidth() / 2;
         centerX = map.getHeight() / 2;
-        console.log(centerX, " ", centerY);
+
         
                // If we are adjacent to the center, then attack
         var offsets = Math.abs(centerX - this.getX()) +
@@ -83,36 +82,24 @@ Game.EntityMixins.MaahinenAI = {
     hunt: function () {
         map = this.getMap()
         target = null;
-        
 
-        /* 
-            check if there's construction tiles in the map
-            find path to nearest one
-            go to it and start building
-        */
-
-        // console.log(map.getHeight());
         tempEntities = map.getEntitiesWithinRadius(this.getX(), this.getY(), this.getZ(), 7)
         for (i = 0; i < tempEntities.length; i++) {
             if (tempEntities[i].hasMixin('Human')) {
                 target = tempEntities[i]
             }
         }
-        //console.log(target);
 
         if (target == null) {
             this.goToCenter()
             return
         }
-        //  console.log(target);
-
-
 
         // If we are adjacent to the target, then attack
         var offsets = Math.abs(target.getX() - this.getX()) +
             Math.abs(target.getY() - this.getY());
         if (offsets === 1) {
-                this.attack(target);
+                //this.attack(target);
                 return;
         }
 

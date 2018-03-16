@@ -89,7 +89,11 @@ Game.ItemMixins.Equippable = {
         }
     }
 };
-
+Game.ItemMixins.Melee = {
+    name: 'Melee',
+    init: function (template) {
+    }
+};
 Game.ItemMixins.Bow = {
     name: 'Bow',
     init: function (template) {

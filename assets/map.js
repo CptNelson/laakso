@@ -200,9 +200,7 @@ Game.Map.prototype.addEntityAtBorder = function(entity, z, repeat, time) {
     var position = this.getRandomBorderPosition(z);
     entity.setX(position.x);
     entity.setY(position.y);
-    entity.setZ(position.z);  
-    console.log(position.x, position.y);
-    
+    entity.setZ(position.z);      
     this.addEntity(entity, repeat, time);
 };
 

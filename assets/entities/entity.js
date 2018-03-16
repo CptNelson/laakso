@@ -74,11 +74,7 @@ Game.Entity.prototype.tryMove = function(x, y, z, map) {
             this.setPosition(x, y, z);
         }
     } else if (z > this.getZ()) {
-        if (tile === Game.Tile.holeToCavernTile &&
-            this.hasMixin(Game.EntityMixins.PlayerAI)) {
-            // Switch the entity to a boss cavern!
-            this.switchMap(new Game.Map.BossCavern());
-        } else if (tile != Game.Tile.stairsDownTile) {
+        if (tile != Game.Tile.stairsDownTile) {
             Game.sendMessage(this, "You can't go down here!");
         } else {
             this.setPosition(x, y, z);
@@ -88,13 +84,9 @@ Game.Entity.prototype.tryMove = function(x, y, z, map) {
     } else if (target) {
         // An entity can only attack if the entity has the Attacker mixin and 
         // either the entity or the target is the player.
-        if (this.hasMixin('Attacker') && 
-            (this.hasMixin(Game.EntityMixins.PlayerAI) ||
-             target.hasMixin(Game.EntityMixins.PlayerAI))) {
-              
-                 
-            this.attack(target);
-            return true;
+        if (target.hasMixin('Destructible')) {
+            
+            return false;
         } 
         // If not nothing we can do, but we can't 
         // move to the tile

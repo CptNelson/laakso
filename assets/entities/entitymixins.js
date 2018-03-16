@@ -59,7 +59,6 @@ Game.EntityMixins.Archer = {
         if (this.hasMixin(Game.EntityMixins.Equipper)) {
             this.wielding = this.getWielding();
             for (wields = 0; wields < this.wielding.length; wields++) {
-                console.log(this.wielding.length);
                 if (this.wielding[wields]) {
                     modifier += this.wielding[wields].getRange();
                 }
@@ -83,8 +82,9 @@ Game.EntityMixins.Archer = {
         // based on attack and defense value
         // console.log(this.getWeapon().getRange());
 
-
-        if (target.hasMixin('Destructible') && shotRange <= this.getRangeValue()) {
+        console.log("shot: ", shotRange);
+        
+        if (target.hasMixin('Destructible') && shotRange <= 3) {
 
             var attack = this.getArcheryValue();
             var defense = target.getDefenseValue();
@@ -138,7 +138,7 @@ Game.EntityMixins.MeleeAttacker = {
     },
     getMeleeSkill: function () {
         var modifier = 0;
-        console.log(this);
+    
         
         
         // If we can equip items, then have to take into 
@@ -193,13 +193,10 @@ Game.EntityMixins.MeleeAttacker = {
                     [target.getName()]);
                 Game.sendMessage(target, '%s misses you!',
                     [this.getName(), damage]);
-                console.log("miss");
-
                 return;
             }
 
             var damage = this.getMeleeDamage();
-            console.log(damage, " ", this.getMeleeDamage());
             
             Game.sendMessage(this, 'You strike %s for %d damage!',
                 [target.getName(), damage]);
@@ -365,7 +362,6 @@ Game.EntityMixins.Sight = {
 Game.sendMessage = function (recipient, message, args) {
     // Make sure the recipient can receive the message 
     // before doing any work.
-    console.log(recipient);
     
     if (recipient.hasMixin(Game.EntityMixins.MessageRecipient)) {
         // If args were passed, then we format the message, else
@@ -558,8 +554,6 @@ Game.EntityMixins.Equipper = {
         this._armor = null;
     },
     getWielding: function () {
-        console.log(this._wield1, this._wield2);
-        
         return [this._wield1, this._wield2]
     },
     getArmor: function () {
@@ -730,9 +724,7 @@ Game.EntityMixins.Carpenter = {
     },
     cutTree: function (targetProp, target) {
         target.setHitpoints(10)
-        console.log(target.getHitpoints());
         if (target.getHitpoints() <= 0) {
-            console.log(targetProp);
             targetProp.getMap()._tiles[targetProp.getZ()][targetProp.getX()][targetProp.getY()] = Game.Tile.floorTile;
             targetProp.changeToItem(Game.ItemRepository.create('wood'),
                 Math.floor(Math.random() * 8) + 5);

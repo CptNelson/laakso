@@ -184,14 +184,11 @@ Game.Screen.playScreen = {
             } else if (inputData.keyCode === ROT.VK_M) {
                 this.markForBuilding();
             } else if (inputData.keyCode === ROT.VK_1) {
-                // Setup the look screen.
-                if (this.checkProjectile()) {
-                    var offsets = this.getScreenOffsets();
-                    Game.Screen.targetScreen.setup(this._player,
-                        this._player.getX(), this._player.getY(), offsets.x, offsets.y);
-                    this.setSubScreen(Game.Screen.targetScreen);
-                } else return;
-
+                // Setup the look screen.   
+                this.useHands(0);
+            } else if (inputData.keyCode === ROT.VK_2) {
+                // Setup the look screen.   
+                this.useHands(1);
             } else if (inputData.keyCode === ROT.VK_I) {
                 // Show the inventory screen
                 scr = Game.Screen.inventoryScreen
@@ -215,14 +212,14 @@ Game.Screen.playScreen = {
                         'You have nothing to wear.');
                 } else {
                     // Show the wield screen
-                    this.showItemsSubScreen(Game.Screen.wieldScreen, this._player.getItems(),
+                    this.showItemsSubScreen(Game.Screen.wieldSecondaryScreen, this._player.getItems(),
                         'You have nothing to wield.');
                 }
                 return;
             } else if (inputData.keyCode === ROT.VK_Q) {
 
                 // Show the wield screen
-                this.showItemsSubScreen(Game.Screen.wield2Screen, this._player.getItems(),
+                this.showItemsSubScreen(Game.Screen.wieldPrimaryScreen, this._player.getItems(),
                     'You have nothing to wield.');
 
                 return;
@@ -278,20 +275,41 @@ Game.Screen.playScreen = {
             this._player.getMap().getEngine().unlock();
         }
     },
-    checkProjectile: function () {
+    useHands: function (h) { 
+       
+        if (this.checkHand(h) == 'projectile') {
+            var offsets = this.getScreenOffsets();
+            Game.Screen.targetScreen.setup(this._player,
+                this._player.getX(), this._player.getY(), offsets.x, offsets.y);
+            this.setSubScreen(Game.Screen.targetScreen);
+        } else if (this.checkHand(h) == 'melee'){
+            console.log("melee");
+            
+        } else if (this.checkHand(h) == 'fist') {
+                console.log('fist')
+        } else console.log('false');
+        
+    },
+    checkHand: function (hand) {
         wielding = this._player.getWielding();
         if (wielding[0] != null && wielding[1] != null) {
             if ((wielding[0].hasMixin('Bow') || wielding[0].hasMixin('Missile')
                 && wielding[0].getAmount() >= 1) &&
-                ((wielding[1].hasMixin('Bow') || wielding[1].hasMixin('Missile')
-                    && wielding[0].getAmount() >= 1))) {
-                console.log("bows and missiles ready!");
-                return true;
-            } else return false;
+               ((wielding[1].hasMixin('Bow') || wielding[1].hasMixin('Missile')
+                && wielding[0].getAmount() >= 1))) {
+                return 'projectile';
+            } else if (wielding[hand].hasMixin('Melee')) {
+                return 'melee';
+            }
+        } else if (wielding[hand] != null && wielding[hand].hasMixin('Melee')) {
+                return 'melee';
+                    
+        } else if (wielding[hand] == null) {
+            return 'fist'
         } else return false;
     },
     wait: function () {
-        Game.Map.prototype.addAction(this._player.getMap(), 2);
+        Game.Map.prototype.addAction(this._player.getMap(), 1);
     },
     markForBuilding: function () {
         var entity = Game.EntityRepository.create('construct');
@@ -547,7 +565,7 @@ Game.Screen.eatScreen = new Game.Screen.ItemListScreen({
     }
 });
 
-Game.Screen.wieldScreen = new Game.Screen.ItemListScreen({
+Game.Screen.wieldPrimaryScreen = new Game.Screen.ItemListScreen({
     caption: 'Choose the item you wish to wield in first hand',
     canSelect: true,
     canSelectMultipleItems: false,
@@ -572,7 +590,7 @@ Game.Screen.wieldScreen = new Game.Screen.ItemListScreen({
         return true;
     }
 });
-Game.Screen.wield2Screen = new Game.Screen.ItemListScreen({
+Game.Screen.wieldSecondaryScreen = new Game.Screen.ItemListScreen({
     caption: 'Choose the item you wish to wield in second hand',
     canSelect: true,
     canSelectMultipleItems: false,
@@ -703,6 +721,7 @@ Game.Screen.TargetBasedScreen = function (template) {
 
 Game.Screen.TargetBasedScreen.prototype.setup = function (player, startX, startY, offsetX, offsetY) {
     this._player = player;
+    this._lineLength = null;
     // Store original position. Subtract the offset to make life easy so we don't
     // always have to remove it.
     this._startX = startX - offsetX;
@@ -722,7 +741,6 @@ Game.Screen.TargetBasedScreen.prototype.setup = function (player, startX, startY
             visibleCells[x + "," + y] = true;
         });
     this._visibleCells = visibleCells;
-    this._lineLength = null;
 };
 
 Game.Screen.TargetBasedScreen.prototype.render = function (display) {
@@ -775,7 +793,13 @@ Game.Screen.TargetBasedScreen.prototype.handleInput = function (inputType, input
         } else if (inputData.keyCode === ROT.VK_RETURN) {
             this.executeOkFunction();
         } else if (inputData.keyCode === ROT.VK_1) {
-            this.missile(this._lineLength);
+
+
+            var points = Game.Geometry.getLine(this._startX, this._startY, this._cursorX,
+                this._cursorY);
+            _lineLength = points.length;
+            console.log(points.length, " ", this._lineLength);
+            this.missile(points.length);
         }
     }
     Game.refresh();
@@ -851,7 +875,7 @@ Game.Screen.TargetBasedScreen.prototype.missile = function (shotRange) {
     var z = this._player.getZ();
     var map = this._player.getMap();
 
-    
+
     // check for collisions between missile and target
     for (var i = 1, l = points.length; i < l; i++) {
         var x = points[i].x + this._offsetX;
@@ -876,7 +900,7 @@ Game.Screen.TargetBasedScreen.prototype.missile = function (shotRange) {
         this._player.getMap().getEngine().unlock();
         Game.Screen.playScreen.setSubScreen(undefined);
         return;
-    } 
+    }
     // Switch back to the play screen and shoot the enemy.
     this._player.getMap().getEngine().unlock();
     Game.Screen.playScreen.setSubScreen(undefined);

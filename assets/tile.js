@@ -81,7 +81,7 @@ Game.Tile.construction = new Game.Tile({
 Game.Tile.treeTile = new Game.Tile({
     character: '▲',
     foreground: 'green',
-    walkable: true,
+    walkable: false,
     blocksLight: true,
     description: 'A pine tree',
     hitpoints: 50
@@ -89,9 +89,9 @@ Game.Tile.treeTile = new Game.Tile({
 Game.Tile.yellowTreeTile = new Game.Tile({
     character: '▲',
     foreground: 'yellowgreen',
-    walkable: true,
-    blocksLight: true,
-    description: 'A pine tree'
+    walkable: false,
+    blocksLight: false,
+    description: 'A small pine tree'
 });
 Game.Tile.yellowBushTile = new Game.Tile({
     character: ',',
