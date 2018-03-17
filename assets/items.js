@@ -59,12 +59,31 @@ Game.ItemRepository.define('dagger', {
     name: 'dagger',
     character: ')',
     foreground: 'gray',
-    attackValue: 5,
+    material: 'iron',
+    attackValue: Math.floor(Math.random() * 1),
+    defenceValue: Math.floor(Math.random() * 1),
+    damageValue: Math.floor(Math.random() * 4) + 1,
     wieldable: true,
     mixins: [Game.ItemMixins.Equippable]
 }, {
     disableRandomCreation: false
 });
+
+Game.ItemRepository.define('silver dagger', {
+    name: 'dagger',
+    character: ')',
+    foreground: 'white',
+    material: 'silver',
+    attackValue: Math.floor(Math.random() * 2),
+    defenceValue: Math.floor(Math.random() * 1),
+    damageValue: Math.floor(Math.random() * 4) + 1,
+    wieldable: true,
+    mixins: [Game.ItemMixins.Equippable,Game.ItemMixins.Melee]
+}, {
+    disableRandomCreation: false
+});
+
+
 Game.ItemRepository.define('axe', {
     name: 'axe',
     character: ')',

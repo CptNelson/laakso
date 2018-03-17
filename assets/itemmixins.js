@@ -48,6 +48,7 @@ Game.ItemMixins.Equippable = {
         this._wieldable = template['wieldable'] || false;
         this._wearable = template['wearable'] || false;
         this._amount = template['amount'] || 1;
+        this._material = template['material'] || 'wood';
     },
     getAttackValue: function () {
         return this._attackValue;
@@ -75,6 +76,9 @@ Game.ItemMixins.Equippable = {
     },
     getAmount: function () {
         return this._amount;
+    },
+    getMaterial: function () {
+        return this._material;
     },
     listeners: {
         'details': function () {

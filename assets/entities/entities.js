@@ -20,17 +20,19 @@ Game.PlayerTemplate = {
 Game.EntityRepository = new Game.Repository('entities', Game.Entity);
 
 
-
 Game.EntityRepository.define('villager', {
     name: 'villager',
     character: 'H',
     foreground: 'white',
-    maxHp: 10,
-    attackValue: 10,
+    maxHp: 20,
+    archeryValue: 20,
+    sightRadius: 14,
+    attackValue: 20,
+    inventorySlots: 6,
     //speed: 1000,
-    mixins: [Game.EntityMixins.VillagerAI, Game.EntityMixins.Carpenter,
+    mixins: [Game.EntityMixins.VillagerAI, Game.EntityMixins.Carpenter,Game.EntityMixins.InventoryHolder,
              Game.EntityMixins.MeleeAttacker, Game.EntityMixins.Destructible,
-             Game.EntityMixins.CorpseDropper, Game.EntityMixins.Sight, 
+             Game.EntityMixins.CorpseDropper, Game.EntityMixins.Sight, Game.EntityMixins.Equipper,
              Game.EntityMixins.Human, Game.EntityMixins.Archer, Game.EntityMixins.Equipper,
              Game.EntityMixins.ExperienceGainer, Game.EntityMixins.RandomStatGainer]
 });
@@ -41,11 +43,24 @@ Game.EntityRepository.define('maahinen', {
     foreground: 'brown',
     maxHp: 13,
     sightRadius: 18,
-    attackValue: 5,
-    //speed: 1000,
+    attackValue: 20,
     mixins: [Game.EntityMixins.MaahinenAI, Game.EntityMixins.Destructible,
              Game.EntityMixins.ExperienceGainer, Game.EntityMixins.RandomStatGainer,
              Game.EntityMixins.MeleeAttacker, Game.EntityMixins.Sight]
+});
+
+Game.EntityRepository.define('maahinen priest', {
+    name: 'maahinen priest',
+    character: 'm',
+    foreground: 'red',
+    maxHp: 10,
+    sightRadius: 20,
+    attackValue: 10,
+    material: 'silver',
+    mixins: [Game.EntityMixins.MaahinenAI, Game.EntityMixins.Destructible,
+             Game.EntityMixins.ExperienceGainer, Game.EntityMixins.RandomStatGainer,
+             Game.EntityMixins.MeleeAttacker, Game.EntityMixins.Sight, Game.EntityMixins.Priest, 
+            Game.EntityMixins.Material]
 });
 
 Game.EntityRepository.define('construct', {

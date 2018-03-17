@@ -746,3 +746,12 @@ Game.EntityMixins.Carpenter = {
         }
     }
 };
+
+Game.EntityMixins.Priest = {
+
+};
+
+
+Game.EntityMixins.Material = {
+
+};

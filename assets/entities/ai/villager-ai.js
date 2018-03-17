@@ -40,6 +40,9 @@ Game.EntityMixins.VillagerAI = {
 
         }
     },
+    stand: function () {
+        Game.Map.prototype.addAction(this.getMap(), 1);
+    },
     build: function () {
         map = this.getMap()
         target = null;
@@ -50,23 +53,16 @@ Game.EntityMixins.VillagerAI = {
             go to it and start building
         */
 
-        // console.log(map.getHeight());
         tempEntities = map.getEntitiesWithinRadius(this.getX(), this.getY(), this.getZ(), 40)
         for (i = 0; i < tempEntities.length; i++) {
             if (tempEntities[i].hasMixin('Prop')) {
                 target = tempEntities[i]
             }
         }
-        //console.log(target);
-
-        if (target == null) {
-            // console.log("23");          
+        if (target == null) {        
             this.wander()
             return
         }
-        //  console.log(target);
-
-
 
         // If we are adjacent to the target, then start building/cutting
         var offsets = Math.abs(target.getX() - this.getX()) +
