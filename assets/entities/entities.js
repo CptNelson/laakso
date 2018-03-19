@@ -56,7 +56,6 @@ Game.EntityRepository.define('maahinen priest', {
     maxHp: 10,
     sightRadius: 20,
     attackValue: 10,
-    material: 'silver',
     mixins: [Game.EntityMixins.MaahinenAI, Game.EntityMixins.Destructible,
              Game.EntityMixins.ExperienceGainer, Game.EntityMixins.RandomStatGainer,
              Game.EntityMixins.MeleeAttacker, Game.EntityMixins.Sight, Game.EntityMixins.Priest, 

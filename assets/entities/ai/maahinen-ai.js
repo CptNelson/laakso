@@ -2,9 +2,14 @@ Game.EntityMixins.MaahinenAI = {
     name: 'MaahinenAI',
     groupName: 'Actor',
     init: function (template) {
-
         // Load tasks
         this._tasks = template['tasks'] || ['hunt','goToCenter', 'wander'];
+        if (this.hasMixin("Priest")) {
+            // if a Priest, silver is needed for killing blow.
+            this._material = template['material'] || silver;
+            
+            // this.Priest();
+        }
     },
     act: function () {
         // Iterate through all our tasks

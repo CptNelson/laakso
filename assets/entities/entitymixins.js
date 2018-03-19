@@ -748,10 +748,23 @@ Game.EntityMixins.Carpenter = {
 };
 
 Game.EntityMixins.Priest = {
+    name: 'Priest',
+    groupName: 'Profession',
+    init: function (template) {
+      
+    },
+    
 
 };
 
 
 Game.EntityMixins.Material = {
-
+    // for example, if entity has material resistance (can't be killed without it),
+    // disable death if killing weapon is not made of material
+    name: 'Material',
+    groupName: 'Status',
+    init: function (template) {
+        this._material = template['material'] || null;
+    },
+    
 };
